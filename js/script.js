@@ -7,6 +7,8 @@ const galleryContainer = document.getElementById('galleryContainer');
 
 let isScrollView = false;
 
+const a=1;
+
 toggleButton.addEventListener('click', function() {
     isScrollView = !isScrollView;
 
