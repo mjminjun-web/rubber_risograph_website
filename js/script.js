@@ -52,8 +52,8 @@ class ColorMixer {
     this.ctx = this.canvas.getContext("2d");
 
     // Images with transform properties
-    this.image_1 = null;
-    this.image_2 = null;
+    this.image1 = null;
+    this.image2 = null;
     this.opacity1 = 1.0;
     this.opacity2 = 1.0;
 
@@ -689,7 +689,7 @@ class ColorMixer {
     if (this.image1) {
       this.ctx.globalAlpha = this.opacity1;
       this.ctx.globalCompositeOperation = "source-over";
-      this.drawImageWithTransform(this.image_1, this.img1Props);
+      this.drawImageWithTransform(this.image1, this.img1Props);
 
       // Add grain texture overlay
       if (this.grainIntensity > 0 && this.halftonePattern) {
@@ -699,10 +699,10 @@ class ColorMixer {
       }
     }
 
-    if (this.image_2) {
+    if (this.image2) {
       this.ctx.globalAlpha = this.opacity2;
       this.ctx.globalCompositeOperation = this.blendMode;
-      this.drawImageWithTransform(this.image_2, this.img2Props);
+      this.drawImageWithTransform(this.image2, this.img2Props);
 
       // Add grain texture overlay
       if (this.grainIntensity > 0 && this.halftonePattern) {
