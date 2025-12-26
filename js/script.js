@@ -52,8 +52,8 @@ class ColorMixer {
     this.ctx = this.canvas.getContext("2d");
 
     // Images with transform properties
-    this.image1 = null;
-    this.image2 = null;
+    this.image_1 = null;
+    this.image_2 = null;
     this.opacity1 = 1.0;
     this.opacity2 = 1.0;
 

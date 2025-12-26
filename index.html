@@ -1,347 +1,684 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Play with Risograph</title>
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="stylesheet" href="style/style.css" />
     <!-- Preload critical images for faster loading -->
-    <link rel="preload" as="image" href="images/image1.png" fetchpriority="high">
-    <link rel="preload" as="image" href="images/image2.png" fetchpriority="high">
-    <link rel="preload" as="image" href="images/image3.png" fetchpriority="high">
-    <link rel="preload" as="image" href="images/image4.png">
-    <link rel="preload" as="image" href="images/image5.png">
-    <link rel="preload" as="image" href="images/image6.png">
-</head>
-<body>
+    <link
+      rel="preload"
+      as="image"
+      href="images/image_1.png"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="images/image_2.png"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="images/image_3.png"
+      fetchpriority="high"
+    />
+    <link rel="preload" as="image" href="images/image_4.png" />
+    <link rel="preload" as="image" href="images/image_5.png" />
+    <link rel="preload" as="image" href="images/image_6.png" />
+  </head>
+  <body>
     <!-- Hero Section -->
     <div class="hero-section">
-        <h1 class="hero-title">Risograph Overlay Studio</h1>
-        <p class="hero-subtitle">Create stunning color overlays and misregistration effects inspired by risograph printing</p>
-        <div class="hero-actions">
-            <button id="drawMode" class="hero-btn-primary">Play with Risograph</button>
-            <button id="toggleView" class="hero-btn-secondary">Switch to Scroll View</button>
-        </div>
+      <h1 class="hero-title">Risograph Overlay Studio</h1>
+      <p class="hero-subtitle">
+        Create stunning color overlays and misregistration effects inspired by
+        risograph printing
+      </p>
+      <div class="hero-actions">
+        <button id="drawMode" class="hero-btn-primary">
+          Play with Risograph
+        </button>
+        <button id="toggleView" class="hero-btn-secondary">
+          Switch to Scroll View
+        </button>
+      </div>
     </div>
 
     <!-- Simple Overlay Modal -->
     <div id="drawModal" class="modal">
-        <div class="modal-content simple-modal">
-            <div class="modal-header">
-                <h2>Image Overlay</h2>
-                <span class="close" id="closeDrawModal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <!-- Image Selection -->
-                
-
-                <!-- Image Controls -->
-                <div class="fun-controls">
-                    <!-- Image 1 Controls -->
-                    <div class="image-control-group">
-                        <div class="control-group-header" data-target="controls1">
-                            <span>Image 1</span>
-                            <span class="collapse-icon">▼</span>
-                        </div>
-                        <div class="control-group-content" id="controls1">
-                            <div class="image-preview-slot" id="preview1" data-empty="true" title="Click to select Image 1">
-                                <span class="empty-slot-text">🖼️ Click to select Image 1</span>
-                            </div>
-                            <div class="button-group">
-                                <button id="selectImage1" class="img-btn" title="Choose from gallery">
-                                    <span class="btn-icon">📁</span> Select from Gallery
-                                </button>
-                                <input type="file" id="uploadImage1" accept="image/*" style="display:none;">
-                                <button id="uploadImage1Btn" class="img-btn" title="Upload your own image">
-                                    <span class="btn-icon">⬆️</span> Upload Image
-                                </button>
-                            </div>
-                            <div class="opacity-control">
-                                <label title="Adjust transparency of Image 1">
-                                    <span class="control-icon">👁️</span> Opacity: <span id="opacity1Value">100%</span>
-                                </label>
-                                <input type="range" id="opacity1Slider" min="0" max="100" value="100" aria-label="Image 1 opacity">
-                            </div>
-                            <div class="opacity-control">
-                                <label style="font-size: 11px;" title="Apply risograph ink color effect">
-                                    <span class="control-icon">🎨</span> Riso Ink:
-                                </label>
-                                <select id="risoColor1Select" class="riso-color-select" aria-label="Riso ink color for Image 1">
-                                <option value="">Original Color</option>
-                                <option value="fluorescent-pink">Fluorescent Pink</option>
-                                <option value="fluorescent-orange">Fluorescent Orange</option>
-                                <option value="sunflower">Sunflower</option>
-                                <option value="yellow">Yellow</option>
-                                <option value="light-lime">Light Lime</option>
-                                <option value="green">Green</option>
-                                <option value="teal">Teal</option>
-                                <option value="aqua">Aqua</option>
-                                <option value="sky-blue">Sky Blue</option>
-                                <option value="blue">Blue</option>
-                                <option value="violet">Violet</option>
-                                <option value="purple">Purple</option>
-                                <option value="burgundy">Burgundy</option>
-                                <option value="red">Red</option>
-                                <option value="scarlet">Scarlet</option>
-                                <option value="bright-red">Bright Red</option>
-                                <option value="black">Black</option>
-                            </select>
-                        </div>
-                        <div class="opacity-control">
-                            <label title="Horizontal position offset">
-                                <span class="control-icon">↔️</span> X: <span id="offsetX1Value">0</span>
-                            </label>
-                            <input type="range" id="offsetX1Slider" min="-100" max="100" value="0" aria-label="Image 1 horizontal offset">
-                        </div>
-                        <div class="opacity-control">
-                            <label title="Vertical position offset">
-                                <span class="control-icon">↕️</span> Y: <span id="offsetY1Value">0</span>
-                            </label>
-                            <input type="range" id="offsetY1Slider" min="-100" max="100" value="0" aria-label="Image 1 vertical offset">
-                        </div>
-                            <div id="palette1" class="color-palette" title="Extracted colors from Image 1"></div>
-                        </div>
-                    </div>
-
-                    <!-- Image 2 Controls -->
-                    <div class="image-control-group">
-                        <div class="control-group-header" data-target="controls2">
-                            <span>Image 2</span>
-                            <span class="collapse-icon">▼</span>
-                        </div>
-                        <div class="control-group-content" id="controls2">
-                            <div class="image-preview-slot" id="preview2" data-empty="true" title="Click to select Image 2">
-                            <span class="empty-slot-text">🖼️ Click to select Image 2</span>
-                        </div>
-                        <div class="button-group">
-                            <button id="selectImage2" class="img-btn" title="Choose from gallery">
-                                <span class="btn-icon">📁</span> Select from Gallery
-                            </button>
-                            <input type="file" id="uploadImage2" accept="image/*" style="display:none;">
-                            <button id="uploadImage2Btn" class="img-btn" title="Upload your own image">
-                                <span class="btn-icon">⬆️</span> Upload Image
-                            </button>
-                        </div>
-                        <div class="opacity-control">
-                            <label title="Adjust transparency of Image 2">
-                                <span class="control-icon">👁️</span> Opacity: <span id="opacity2Value">100%</span>
-                            </label>
-                            <input type="range" id="opacity2Slider" min="0" max="100" value="100" aria-label="Image 2 opacity">
-                        </div>
-                        <div class="opacity-control">
-                            <label style="font-size: 11px;" title="Apply risograph ink color effect">
-                                <span class="control-icon">🎨</span> Riso Ink:
-                            </label>
-                            <select id="risoColor2Select" class="riso-color-select" aria-label="Riso ink color for Image 2">
-                                <option value="">Original Color</option>
-                                <option value="fluorescent-pink">Fluorescent Pink</option>
-                                <option value="fluorescent-orange">Fluorescent Orange</option>
-                                <option value="sunflower">Sunflower</option>
-                                <option value="yellow">Yellow</option>
-                                <option value="light-lime">Light Lime</option>
-                                <option value="green">Green</option>
-                                <option value="teal">Teal</option>
-                                <option value="aqua">Aqua</option>
-                                <option value="sky-blue">Sky Blue</option>
-                                <option value="blue">Blue</option>
-                                <option value="violet">Violet</option>
-                                <option value="purple">Purple</option>
-                                <option value="burgundy">Burgundy</option>
-                                <option value="red">Red</option>
-                                <option value="scarlet">Scarlet</option>
-                                <option value="bright-red">Bright Red</option>
-                                <option value="black">Black</option>
-                            </select>
-                        </div>
-                        <div class="opacity-control">
-                            <label title="Horizontal position offset">
-                                <span class="control-icon">↔️</span> X: <span id="offsetX2Value">0</span>
-                            </label>
-                            <input type="range" id="offsetX2Slider" min="-100" max="100" value="0" aria-label="Image 2 horizontal offset">
-                        </div>
-                        <div class="opacity-control">
-                            <label title="Vertical position offset">
-                                <span class="control-icon">↕️</span> Y: <span id="offsetY2Value">0</span>
-                            </label>
-                            <input type="range" id="offsetY2Slider" min="-100" max="100" value="0" aria-label="Image 2 vertical offset">
-                        </div>
-                            <div id="palette2" class="color-palette" title="Extracted colors from Image 2"></div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Mobile Rotation Controls -->
-                <div class="mobile-controls">
-                    <div class="mobile-rotation-group">
-                        <label>Image 1 Rotation:</label>
-                        <div class="rotation-buttons">
-                            <button class="rotate-btn" id="rotateImg1Left">↺</button>
-                            <button class="rotate-btn" id="rotateImg1Right">↻</button>
-                        </div>
-                    </div>
-                    <div class="mobile-rotation-group">
-                        <label>Image 2 Rotation:</label>
-                        <div class="rotation-buttons">
-                            <button class="rotate-btn" id="rotateImg2Left">↺</button>
-                            <button class="rotate-btn" id="rotateImg2Right">↻</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Canvas -->
-                <div class="simple-canvas-wrap">
-                    <!-- Canvas on the left -->
-                    <div class="canvas-container">
-                        <canvas id="mainCanvas" width="1200" height="800"></canvas>
-                        <div class="empty-canvas-state" id="emptyCanvasState">
-                            <p class="empty-state-icon">🎨</p>
-                            <p class="empty-state-text">Select two images to begin creating</p>
-                        </div>
-                    </div>
-
-                    <!-- Controls on the right -->
-                    <div class="canvas-side-controls">
-                        <div class="canvas-top-actions">
-                            <button id="saveBtn" class="save-btn-small" title="Download your creation">
-                                <span class="btn-icon">💾</span> Save
-                            </button>
-                            <button id="clearBtn" class="clear-btn-small" title="Reset everything">
-                                <span class="btn-icon">🗑️</span> Clear
-                            </button>
-                        </div>
-
-                        <!-- Effects Section - Collapsible -->
-                        <div class="canvas-control-group">
-                            <div class="control-group-header collapsed" data-target="effectsContent">
-                                <span>Effects</span>
-                                <span class="collapse-icon">▼</span>
-                            </div>
-                            <div class="control-group-content collapsed" id="effectsContent">
-                                <div id="funEffectsSection" class="fun-effects-section-inline">
-                                    <div class="effects-buttons">
-                                        <button id="randomDotsBtn" class="fun-btn dots" title="Create random dot pattern">
-                                            <span class="btn-icon">⚫</span> Random Dots
-                                        </button>
-                                        <button id="randomLinesBtn" class="fun-btn lines" title="Create random line pattern">
-                                            <span class="btn-icon">➖</span> Random Lines
-                                        </button>
-                                        <button id="mixColorsBtn" class="fun-btn mix" title="Mix colors from images">
-                                            <span class="btn-icon">🌈</span> Color Mix
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <!-- Risograph Settings -->
-                        <div class="canvas-control-group riso-settings">
-                            <div class="control-group-header" data-target="controls3">
-                                <span>⚙️ Risograph Settings</span>
-                                <span class="collapse-icon">▼</span>
-                            </div>
-                            <div class="control-group-content" id="controls3">
-
-                            <label style="font-weight: 600; font-size: 11px;">Blend Mode:</label>
-                            <select id="blendModeSelect" class="blend-select">
-                                <option value="normal">Normal</option>
-                                <option value="multiply" selected>Multiply (Riso)</option>
-                                <option value="screen">Screen</option>
-                                <option value="overlay">Overlay</option>
-                                <option value="darken">Darken</option>
-                                <option value="lighten">Lighten</option>
-                                <option value="color-dodge">Color Dodge</option>
-                                <option value="color-burn">Color Burn</option>
-                                <option value="hard-light">Hard Light</option>
-                                <option value="soft-light">Soft Light</option>
-                                <option value="difference">Difference</option>
-                                <option value="exclusion">Exclusion</option>
-                            </select>
-
-                            <label style="font-weight: 600; font-size: 11px; margin-top: 8px;">Misregistration:</label>
-                            <div class="misreg-presets">
-                                <button class="misreg-btn" data-preset="subtle">Subtle</button>
-                                <button class="misreg-btn" data-preset="moderate">Moderate</button>
-                                <button class="misreg-btn" data-preset="extreme">Extreme</button>
-                                <button class="misreg-btn" data-preset="horizontal">H-Only</button>
-                                <button class="misreg-btn" data-preset="vertical">V-Only</button>
-                            </div>
-
-                            <button id="separationModeBtn" class="separation-btn" title="View layers separately">
-                                <span class="btn-icon">👁️</span> Separation View
-                            </button>
-                            <button id="surpriseMeBtn" class="surprise-btn" title="Apply random settings">
-                                <span class="btn-icon">🎲</span> Surprise Me!
-                            </button>
-                            </div>
-                        </div>
-
-                        <!-- Instructions Section - Collapsible -->
-                        <div class="canvas-control-group">
-                            <div class="control-group-header collapsed" data-target="instructionsContent">
-                                <span>Instructions</span>
-                                <span class="collapse-icon">▼</span>
-                            </div>
-                            <div class="control-group-content collapsed" id="instructionsContent">
-                                <div class="instructions-inline">
-                                    <p><strong>🎯 Quick Tips:</strong></p>
-                                    <p>• <strong>Drag</strong> images on canvas to reposition</p>
-                                    <p class="desktop-only">• <strong>Q/E</strong> keys rotate Image 1<br>&nbsp;&nbsp;<strong>A/D</strong> keys rotate Image 2</p>
-                                    <p class="mobile-only">• Use ↺/↻ buttons to rotate images</p>
-                                    <p>• Adjust <strong>Opacity</strong> for transparency</p>
-                                    <p>• Use <strong>X/Y</strong> sliders for misregistration</p>
-                                    <p>• Try <strong>Riso Ink</strong> colors for authentic look</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Image Picker -->
-                <div id="imagePickerOverlay" class="image-picker-overlay hidden">
-                    <div class="image-picker-content">
-                        <div class="image-picker-header">
-                            <h3>📁 Select an Image</h3>
-                            <button id="closeImagePicker" class="close-picker" title="Close picker">&times;</button>
-                        </div>
-                        <div class="image-picker-grid" id="imagePickerGrid"></div>
-                    </div>
-                </div>
-            </div>
+      <div class="modal-content simple-modal">
+        <div class="modal-header">
+          <h2>Image Overlay</h2>
+          <span class="close" id="closeDrawModal">&times;</span>
         </div>
+        <div class="modal-body">
+          <!-- Image Selection -->
+
+          <!-- Image Controls -->
+          <div class="fun-controls">
+            <!-- Image 1 Controls -->
+            <div class="image-control-group">
+              <div class="control-group-header" data-target="controls1">
+                <span>Image 1</span>
+                <span class="collapse-icon">▼</span>
+              </div>
+              <div class="control-group-content" id="controls1">
+                <div
+                  class="image-preview-slot"
+                  id="preview1"
+                  data-empty="true"
+                  title="Click to select Image 1"
+                >
+                  <span class="empty-slot-text"
+                    >🖼️ Click to select Image 1</span
+                  >
+                </div>
+                <div class="button-group">
+                  <button
+                    id="selectImage1"
+                    class="img-btn"
+                    title="Choose from gallery"
+                  >
+                    <span class="btn-icon">📁</span> Select from Gallery
+                  </button>
+                  <input
+                    type="file"
+                    id="uploadImage1"
+                    accept="image/*"
+                    style="display: none"
+                  />
+                  <button
+                    id="uploadImage1Btn"
+                    class="img-btn"
+                    title="Upload your own image"
+                  >
+                    <span class="btn-icon">⬆️</span> Upload Image
+                  </button>
+                </div>
+                <div class="opacity-control">
+                  <label title="Adjust transparency of Image 1">
+                    <span class="control-icon">👁️</span> Opacity:
+                    <span id="opacity1Value">100%</span>
+                  </label>
+                  <input
+                    type="range"
+                    id="opacity1Slider"
+                    min="0"
+                    max="100"
+                    value="100"
+                    aria-label="Image 1 opacity"
+                  />
+                </div>
+                <div class="opacity-control">
+                  <label
+                    style="font-size: 11px"
+                    title="Apply risograph ink color effect"
+                  >
+                    <span class="control-icon">🎨</span> Riso Ink:
+                  </label>
+                  <select
+                    id="risoColor1Select"
+                    class="riso-color-select"
+                    aria-label="Riso ink color for Image 1"
+                  >
+                    <option value="">Original Color</option>
+                    <option value="fluorescent-pink">Fluorescent Pink</option>
+                    <option value="fluorescent-orange">
+                      Fluorescent Orange
+                    </option>
+                    <option value="sunflower">Sunflower</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="light-lime">Light Lime</option>
+                    <option value="green">Green</option>
+                    <option value="teal">Teal</option>
+                    <option value="aqua">Aqua</option>
+                    <option value="sky-blue">Sky Blue</option>
+                    <option value="blue">Blue</option>
+                    <option value="violet">Violet</option>
+                    <option value="purple">Purple</option>
+                    <option value="burgundy">Burgundy</option>
+                    <option value="red">Red</option>
+                    <option value="scarlet">Scarlet</option>
+                    <option value="bright-red">Bright Red</option>
+                    <option value="black">Black</option>
+                  </select>
+                </div>
+                <div class="opacity-control">
+                  <label title="Horizontal position offset">
+                    <span class="control-icon">↔️</span> X:
+                    <span id="offsetX1Value">0</span>
+                  </label>
+                  <input
+                    type="range"
+                    id="offsetX1Slider"
+                    min="-100"
+                    max="100"
+                    value="0"
+                    aria-label="Image 1 horizontal offset"
+                  />
+                </div>
+                <div class="opacity-control">
+                  <label title="Vertical position offset">
+                    <span class="control-icon">↕️</span> Y:
+                    <span id="offsetY1Value">0</span>
+                  </label>
+                  <input
+                    type="range"
+                    id="offsetY1Slider"
+                    min="-100"
+                    max="100"
+                    value="0"
+                    aria-label="Image 1 vertical offset"
+                  />
+                </div>
+                <div
+                  id="palette1"
+                  class="color-palette"
+                  title="Extracted colors from Image 1"
+                ></div>
+              </div>
+            </div>
+
+            <!-- Image 2 Controls -->
+            <div class="image-control-group">
+              <div class="control-group-header" data-target="controls2">
+                <span>Image 2</span>
+                <span class="collapse-icon">▼</span>
+              </div>
+              <div class="control-group-content" id="controls2">
+                <div
+                  class="image-preview-slot"
+                  id="preview2"
+                  data-empty="true"
+                  title="Click to select Image 2"
+                >
+                  <span class="empty-slot-text"
+                    >🖼️ Click to select Image 2</span
+                  >
+                </div>
+                <div class="button-group">
+                  <button
+                    id="selectImage2"
+                    class="img-btn"
+                    title="Choose from gallery"
+                  >
+                    <span class="btn-icon">📁</span> Select from Gallery
+                  </button>
+                  <input
+                    type="file"
+                    id="uploadImage2"
+                    accept="image/*"
+                    style="display: none"
+                  />
+                  <button
+                    id="uploadImage2Btn"
+                    class="img-btn"
+                    title="Upload your own image"
+                  >
+                    <span class="btn-icon">⬆️</span> Upload Image
+                  </button>
+                </div>
+                <div class="opacity-control">
+                  <label title="Adjust transparency of Image 2">
+                    <span class="control-icon">👁️</span> Opacity:
+                    <span id="opacity2Value">100%</span>
+                  </label>
+                  <input
+                    type="range"
+                    id="opacity2Slider"
+                    min="0"
+                    max="100"
+                    value="100"
+                    aria-label="Image 2 opacity"
+                  />
+                </div>
+                <div class="opacity-control">
+                  <label
+                    style="font-size: 11px"
+                    title="Apply risograph ink color effect"
+                  >
+                    <span class="control-icon">🎨</span> Riso Ink:
+                  </label>
+                  <select
+                    id="risoColor2Select"
+                    class="riso-color-select"
+                    aria-label="Riso ink color for Image 2"
+                  >
+                    <option value="">Original Color</option>
+                    <option value="fluorescent-pink">Fluorescent Pink</option>
+                    <option value="fluorescent-orange">
+                      Fluorescent Orange
+                    </option>
+                    <option value="sunflower">Sunflower</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="light-lime">Light Lime</option>
+                    <option value="green">Green</option>
+                    <option value="teal">Teal</option>
+                    <option value="aqua">Aqua</option>
+                    <option value="sky-blue">Sky Blue</option>
+                    <option value="blue">Blue</option>
+                    <option value="violet">Violet</option>
+                    <option value="purple">Purple</option>
+                    <option value="burgundy">Burgundy</option>
+                    <option value="red">Red</option>
+                    <option value="scarlet">Scarlet</option>
+                    <option value="bright-red">Bright Red</option>
+                    <option value="black">Black</option>
+                  </select>
+                </div>
+                <div class="opacity-control">
+                  <label title="Horizontal position offset">
+                    <span class="control-icon">↔️</span> X:
+                    <span id="offsetX2Value">0</span>
+                  </label>
+                  <input
+                    type="range"
+                    id="offsetX2Slider"
+                    min="-100"
+                    max="100"
+                    value="0"
+                    aria-label="Image 2 horizontal offset"
+                  />
+                </div>
+                <div class="opacity-control">
+                  <label title="Vertical position offset">
+                    <span class="control-icon">↕️</span> Y:
+                    <span id="offsetY2Value">0</span>
+                  </label>
+                  <input
+                    type="range"
+                    id="offsetY2Slider"
+                    min="-100"
+                    max="100"
+                    value="0"
+                    aria-label="Image 2 vertical offset"
+                  />
+                </div>
+                <div
+                  id="palette2"
+                  class="color-palette"
+                  title="Extracted colors from Image 2"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mobile Rotation Controls -->
+          <div class="mobile-controls">
+            <div class="mobile-rotation-group">
+              <label>Image 1 Rotation:</label>
+              <div class="rotation-buttons">
+                <button class="rotate-btn" id="rotateImg1Left">↺</button>
+                <button class="rotate-btn" id="rotateImg1Right">↻</button>
+              </div>
+            </div>
+            <div class="mobile-rotation-group">
+              <label>Image 2 Rotation:</label>
+              <div class="rotation-buttons">
+                <button class="rotate-btn" id="rotateImg2Left">↺</button>
+                <button class="rotate-btn" id="rotateImg2Right">↻</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Canvas -->
+          <div class="simple-canvas-wrap">
+            <!-- Canvas on the left -->
+            <div class="canvas-container">
+              <canvas id="mainCanvas" width="1200" height="800"></canvas>
+              <div class="empty-canvas-state" id="emptyCanvasState">
+                <p class="empty-state-icon">🎨</p>
+                <p class="empty-state-text">
+                  Select two images to begin creating
+                </p>
+              </div>
+            </div>
+
+            <!-- Controls on the right -->
+            <div class="canvas-side-controls">
+              <div class="canvas-top-actions">
+                <button
+                  id="saveBtn"
+                  class="save-btn-small"
+                  title="Download your creation"
+                >
+                  <span class="btn-icon">💾</span> Save
+                </button>
+                <button
+                  id="clearBtn"
+                  class="clear-btn-small"
+                  title="Reset everything"
+                >
+                  <span class="btn-icon">🗑️</span> Clear
+                </button>
+              </div>
+
+              <!-- Effects Section - Collapsible -->
+              <div class="canvas-control-group">
+                <div
+                  class="control-group-header collapsed"
+                  data-target="effectsContent"
+                >
+                  <span>Effects</span>
+                  <span class="collapse-icon">▼</span>
+                </div>
+                <div
+                  class="control-group-content collapsed"
+                  id="effectsContent"
+                >
+                  <div
+                    id="funEffectsSection"
+                    class="fun-effects-section-inline"
+                  >
+                    <div class="effects-buttons">
+                      <button
+                        id="randomDotsBtn"
+                        class="fun-btn dots"
+                        title="Create random dot pattern"
+                      >
+                        <span class="btn-icon">⚫</span> Random Dots
+                      </button>
+                      <button
+                        id="randomLinesBtn"
+                        class="fun-btn lines"
+                        title="Create random line pattern"
+                      >
+                        <span class="btn-icon">➖</span> Random Lines
+                      </button>
+                      <button
+                        id="mixColorsBtn"
+                        class="fun-btn mix"
+                        title="Mix colors from images"
+                      >
+                        <span class="btn-icon">🌈</span> Color Mix
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Risograph Settings -->
+              <div class="canvas-control-group riso-settings">
+                <div class="control-group-header" data-target="controls3">
+                  <span>⚙️ Risograph Settings</span>
+                  <span class="collapse-icon">▼</span>
+                </div>
+                <div class="control-group-content" id="controls3">
+                  <label style="font-weight: 600; font-size: 11px"
+                    >Blend Mode:</label
+                  >
+                  <select id="blendModeSelect" class="blend-select">
+                    <option value="normal">Normal</option>
+                    <option value="multiply" selected>Multiply (Riso)</option>
+                    <option value="screen">Screen</option>
+                    <option value="overlay">Overlay</option>
+                    <option value="darken">Darken</option>
+                    <option value="lighten">Lighten</option>
+                    <option value="color-dodge">Color Dodge</option>
+                    <option value="color-burn">Color Burn</option>
+                    <option value="hard-light">Hard Light</option>
+                    <option value="soft-light">Soft Light</option>
+                    <option value="difference">Difference</option>
+                    <option value="exclusion">Exclusion</option>
+                  </select>
+
+                  <label
+                    style="font-weight: 600; font-size: 11px; margin-top: 8px"
+                    >Misregistration:</label
+                  >
+                  <div class="misreg-presets">
+                    <button class="misreg-btn" data-preset="subtle">
+                      Subtle
+                    </button>
+                    <button class="misreg-btn" data-preset="moderate">
+                      Moderate
+                    </button>
+                    <button class="misreg-btn" data-preset="extreme">
+                      Extreme
+                    </button>
+                    <button class="misreg-btn" data-preset="horizontal">
+                      H-Only
+                    </button>
+                    <button class="misreg-btn" data-preset="vertical">
+                      V-Only
+                    </button>
+                  </div>
+
+                  <button
+                    id="separationModeBtn"
+                    class="separation-btn"
+                    title="View layers separately"
+                  >
+                    <span class="btn-icon">👁️</span> Separation View
+                  </button>
+                  <button
+                    id="surpriseMeBtn"
+                    class="surprise-btn"
+                    title="Apply random settings"
+                  >
+                    <span class="btn-icon">🎲</span> Surprise Me!
+                  </button>
+                </div>
+              </div>
+
+              <!-- Instructions Section - Collapsible -->
+              <div class="canvas-control-group">
+                <div
+                  class="control-group-header collapsed"
+                  data-target="instructionsContent"
+                >
+                  <span>Instructions</span>
+                  <span class="collapse-icon">▼</span>
+                </div>
+                <div
+                  class="control-group-content collapsed"
+                  id="instructionsContent"
+                >
+                  <div class="instructions-inline">
+                    <p><strong>🎯 Quick Tips:</strong></p>
+                    <p>
+                      • <strong>Drag</strong> images on canvas to reposition
+                    </p>
+                    <p class="desktop-only">
+                      • <strong>Q/E</strong> keys rotate Image 1<br />&nbsp;&nbsp;<strong
+                        >A/D</strong
+                      >
+                      keys rotate Image 2
+                    </p>
+                    <p class="mobile-only">
+                      • Use ↺/↻ buttons to rotate images
+                    </p>
+                    <p>• Adjust <strong>Opacity</strong> for transparency</p>
+                    <p>
+                      • Use <strong>X/Y</strong> sliders for misregistration
+                    </p>
+                    <p>
+                      • Try <strong>Riso Ink</strong> colors for authentic look
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Image Picker -->
+          <div id="imagePickerOverlay" class="image-picker-overlay hidden">
+            <div class="image-picker-content">
+              <div class="image-picker-header">
+                <h3>📁 Select an Image</h3>
+                <button
+                  id="closeImagePicker"
+                  class="close-picker"
+                  title="Close picker"
+                >
+                  &times;
+                </button>
+              </div>
+              <div class="image-picker-grid" id="imagePickerGrid"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="content" id="galleryContainer">
-        <!-- Image Section -->
-        <img src="images/image1.png" alt="Image 1" loading="eager" decoding="async" fetchpriority="high">
-        <img src="images/image2.png" alt="Image 2" loading="eager" decoding="async" fetchpriority="high">
-        <img src="images/image3.png" alt="Image 3" loading="eager" decoding="async" fetchpriority="high">
-        <img src="images/image4.png" alt="Image 4" loading="lazy" decoding="async">
-        <img src="images/image5.png" alt="Image 5" loading="lazy" decoding="async">
-        <img src="images/image6.png" alt="Image 6" loading="lazy" decoding="async">
-        <img src="images/image7.png" alt="Image 7" loading="lazy" decoding="async">
-        <img src="images/image8.png" alt="Image 8" loading="lazy" decoding="async">
-        <img src="images/image9.png" alt="Image 9" loading="lazy" decoding="async">
-        <img src="images/image10.png" alt="Image 10" loading="lazy" decoding="async">
-        <img src="images/image11.png" alt="Image 11" loading="lazy" decoding="async">
-        <img src="images/image12.png" alt="Image 12" loading="lazy" decoding="async">
-        <img src="images/image13.png" alt="Image 13" loading="lazy" decoding="async">
-        <img src="images/image14.png" alt="Image 14" loading="lazy" decoding="async">
-        <img src="images/image15.png" alt="Image 15" loading="lazy" decoding="async">
-        <img src="images/image16.png" alt="Image 16" loading="lazy" decoding="async">
-        <img src="images/image17.png" alt="Image 17" loading="lazy" decoding="async">
-        <img src="images/image18.png" alt="Image 18" loading="lazy" decoding="async">
-        <img src="images/image19.png" alt="Image 19" loading="lazy" decoding="async">
-        <img src="images/image20.png" alt="Image 20" loading="lazy" decoding="async">
-        <img src="images/image21.png" alt="Image 21" loading="lazy" decoding="async">
-        <img src="images/image22.png" alt="Image 22" loading="lazy" decoding="async">
-        <img src="images/image23.png" alt="Image 23" loading="lazy" decoding="async">
-        <img src="images/image24.png" alt="Image 24" loading="lazy" decoding="async">
-        <img src="images/image25.png" alt="Image 25" loading="lazy" decoding="async">
-
+      <!-- Image Section -->
+      <img
+        src="images/image_1.png"
+        alt="Image 1"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <img
+        src="images/image_2.png"
+        alt="Image 2"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <img
+        src="images/image_3.png"
+        alt="Image 3"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+      <img
+        src="images/image_4.png"
+        alt="Image 4"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_5.png"
+        alt="Image 5"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_6.png"
+        alt="Image 6"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_7.png"
+        alt="Image 7"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_8.png"
+        alt="Image 8"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_9.png"
+        alt="Image 9"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_10.png"
+        alt="Image 10"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_11.png"
+        alt="Image 11"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_12.png"
+        alt="Image 12"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_13.png"
+        alt="Image 13"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_14.png"
+        alt="Image 14"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_15.png"
+        alt="Image 15"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_16.png"
+        alt="Image 16"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_17.png"
+        alt="Image 17"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_18.png"
+        alt="Image 18"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_19.png"
+        alt="Image 19"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_20.png"
+        alt="Image 20"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_21.png"
+        alt="Image 21"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_22.png"
+        alt="Image 22"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_23.png"
+        alt="Image 23"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_24.png"
+        alt="Image 24"
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        src="images/image_25.png"
+        alt="Image 25"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
     <script src="js/script.js"></script>
-</body>
+  </body>
 </html>
