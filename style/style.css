@@ -95,6 +95,9 @@ body {
 .content.scroll-view {
   display: block;
   padding: 1rem;
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
 }
 
 .content.scroll-view br {
@@ -113,11 +116,15 @@ body {
 }
 
 .content.scroll-view img {
-  width: 30%;
-  min-width: 150px;
+  width: 100%;
+  max-width: 800px;
   height: auto;
-  margin-bottom: 1rem;
-  align-items: top;
+  margin-bottom: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
 }
 
 .content img:hover {
@@ -136,6 +143,95 @@ body {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Welcome Modal */
+.welcome-modal {
+  max-width: 500px;
+  margin: 20% auto;
+  padding: 0;
+  text-align: center;
+  animation: fadeInScale 0.4s ease-out;
+  position: relative;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.close-welcome {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  color: #aaa;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s;
+  z-index: 1;
+}
+
+.close-welcome:hover,
+.close-welcome:focus {
+  color: #000;
+}
+
+.welcome-content {
+  padding: 40px 30px;
+}
+
+.welcome-content h2 {
+  margin: 0 0 10px 0;
+  color: #171717;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.welcome-content h3 {
+  margin: 0 0 20px 0;
+  color: #737373;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.welcome-content p {
+  margin: 0 0 25px 0;
+  color: #525252;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.highlight-riso {
+  font-family: "Courier New", Courier;
+  color: #171717;
+  font-style: italic;
+}
+
+.view-prints-btn {
+  padding: 12px 32px;
+  background: #171717;
+  color: #fff;
+  border: 1px solid #171717;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.view-prints-btn:hover {
+  background: #000;
+  border-color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content {

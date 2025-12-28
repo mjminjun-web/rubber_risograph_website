@@ -1,6 +1,61 @@
 // Image Gallery Script
 console.log("Image gallery loaded successfully!");
 
+// Welcome Modal
+document.addEventListener("DOMContentLoaded", function () {
+  const welcomeModal = document.getElementById("welcomeModal");
+  const closeWelcomeBtn = document.getElementById("closeWelcome");
+  const viewPrintsBtn = document.getElementById("viewPrintsBtn");
+
+  // Check if user has seen the welcome message before
+  const hasSeenWelcome = sessionStorage.getItem("hasSeenWelcome");
+
+  if (hasSeenWelcome) {
+    // Hide welcome modal if already seen
+    welcomeModal.style.display = "none";
+  } else {
+    // Show welcome modal
+    welcomeModal.style.display = "block";
+  }
+
+  // Close welcome modal when close button is clicked
+  if (closeWelcomeBtn) {
+    closeWelcomeBtn.addEventListener("click", function () {
+      welcomeModal.style.display = "none";
+      sessionStorage.setItem("hasSeenWelcome", "true");
+    });
+  }
+
+  // Close modal and scroll to gallery when View Prints button is clicked
+  if (viewPrintsBtn) {
+    viewPrintsBtn.addEventListener("click", function () {
+      welcomeModal.style.display = "none";
+      sessionStorage.setItem("hasSeenWelcome", "true");
+      // Scroll to the gallery section
+      const galleryContainer = document.getElementById("galleryContainer");
+      if (galleryContainer) {
+        galleryContainer.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }
+
+  // Also close if user clicks outside the modal
+  welcomeModal.addEventListener("click", function (e) {
+    if (e.target === welcomeModal) {
+      welcomeModal.style.display = "none";
+      sessionStorage.setItem("hasSeenWelcome", "true");
+    }
+  });
+
+  // Close welcome modal when ESC key is pressed
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && welcomeModal.style.display === "block") {
+      welcomeModal.style.display = "none";
+      sessionStorage.setItem("hasSeenWelcome", "true");
+    }
+  });
+});
+
 // Toggle between scroll and grid view (Grid is default now)
 const toggleButton = document.getElementById("toggleView");
 const galleryContainer = document.getElementById("galleryContainer");
