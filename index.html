@@ -35,15 +35,20 @@
         <span class="close-welcome" id="closeWelcome">&times;</span>
         <div class="welcome-content">
           <h2>Welcome to Mj's Riso Playground</h2>
-          <h3>Experiment with rubber, color, and risograph just like MJ did.</h3>
+          <h3>
+            Experiment with rubber, color, and risograph just like MJ did.
+          </h3>
           <p>
-            This is MJ's <span class="highlight-riso">Risograph playground</span> — a space where he experimented
-            with rubber and printing. <br />
+            This is MJ's
+            <span class="highlight-riso">Risograph playground</span> — a space
+            where he experimented with rubber and riso-printing. <br />
             He also created an interactive program that allows users to
             experience the same process and sensations he had while working on
             this project.
           </p>
-          <button id="viewPrintsBtn" class="view-prints-btn">View Prints</button>
+          <button id="viewPrintsBtn" class="view-prints-btn">
+            View Prints
+          </button>
         </div>
       </div>
     </div>
@@ -61,6 +66,18 @@
         </button>
         <button id="toggleView" class="hero-btn-secondary">
           Switch to Scroll View
+        </button>
+      </div>
+    </div>
+
+    <!-- Rotation Prompt for Mobile -->
+    <div id="rotationPrompt" class="rotation-prompt hidden">
+      <div class="rotation-prompt-content">
+        <div class="rotation-icon">📱 ↻</div>
+        <h3>For Better Experience</h3>
+        <p>Please rotate your device to landscape mode</p>
+        <button id="dismissRotation" class="dismiss-rotation-btn">
+          Continue Anyway
         </button>
       </div>
     </div>
@@ -532,6 +549,8 @@
         loading="eager"
         decoding="async"
         fetchpriority="high"
+        width="800"
+        height="600"
       />
       <img
         src="images/image_2.png"
@@ -539,6 +558,8 @@
         loading="eager"
         decoding="async"
         fetchpriority="high"
+        width="800"
+        height="600"
       />
       <img
         src="images/image_3.png"
@@ -546,12 +567,16 @@
         loading="eager"
         decoding="async"
         fetchpriority="high"
+        width="800"
+        height="600"
       />
       <img
         src="images/image_4.png"
         alt="Image 4"
         loading="lazy"
         decoding="async"
+        width="800"
+        height="600"
       />
       <img
         src="images/image_5.png"

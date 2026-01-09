@@ -70,9 +70,17 @@ toggleButton.addEventListener("click", function () {
   if (isScrollView) {
     galleryContainer.classList.add("scroll-view");
     toggleButton.textContent = "Switch to Grid View";
+    // Change button to active state (black background)
+    toggleButton.style.backgroundColor = "#000";
+    toggleButton.style.borderColor = "#000";
+    toggleButton.style.color = "#fff";
   } else {
     galleryContainer.classList.remove("scroll-view");
     toggleButton.textContent = "Switch to Scroll View";
+    // Reset button to default state
+    toggleButton.style.backgroundColor = "#fff";
+    toggleButton.style.borderColor = "#e5e5e5";
+    toggleButton.style.color = "#171717";
   }
 });
 
@@ -1270,9 +1278,43 @@ document.addEventListener("DOMContentLoaded", function () {
   const drawModeBtn = document.getElementById("drawMode");
   const drawModal = document.getElementById("drawModal");
   const closeDrawModal = document.getElementById("closeDrawModal");
+  const rotationPrompt = document.getElementById("rotationPrompt");
+  const dismissRotationBtn = document.getElementById("dismissRotation");
+
+  // Check if device is mobile and in portrait mode
+  function isMobilePortrait() {
+    return window.innerWidth <= 768 && window.innerHeight > window.innerWidth;
+  }
 
   if (drawModeBtn) {
     drawModeBtn.addEventListener("click", function () {
+      // Check if mobile and portrait mode
+      if (isMobilePortrait()) {
+        // Show rotation prompt instead of modal
+        rotationPrompt.classList.remove("hidden");
+        rotationPrompt.classList.add("active");
+        // Change button to active state
+        drawModeBtn.style.backgroundColor = "#000";
+        drawModeBtn.style.borderColor = "#000";
+        drawModeBtn.style.color = "#fff";
+      } else {
+        // Desktop or landscape - show modal directly
+        drawModal.style.display = "block";
+        drawModeBtn.style.backgroundColor = "#000";
+        drawModeBtn.style.borderColor = "#000";
+        drawModeBtn.style.color = "#fff";
+        if (!colorMixer) {
+          colorMixer = new ColorMixer();
+        }
+      }
+    });
+  }
+
+  // Dismiss rotation prompt and show modal anyway
+  if (dismissRotationBtn) {
+    dismissRotationBtn.addEventListener("click", function () {
+      rotationPrompt.classList.add("hidden");
+      rotationPrompt.classList.remove("active");
       drawModal.style.display = "block";
       if (!colorMixer) {
         colorMixer = new ColorMixer();
@@ -1280,15 +1322,53 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Auto-hide rotation prompt if user rotates to landscape
+  window.addEventListener("resize", function () {
+    if (rotationPrompt.classList.contains("active") && !isMobilePortrait()) {
+      rotationPrompt.classList.add("hidden");
+      rotationPrompt.classList.remove("active");
+      drawModal.style.display = "block";
+      if (!colorMixer) {
+        colorMixer = new ColorMixer();
+      }
+    }
+  });
+
+  // Also check on orientation change
+  window.addEventListener("orientationchange", function () {
+    setTimeout(function () {
+      if (rotationPrompt.classList.contains("active") && !isMobilePortrait()) {
+        rotationPrompt.classList.add("hidden");
+        rotationPrompt.classList.remove("active");
+        drawModal.style.display = "block";
+        if (!colorMixer) {
+          colorMixer = new ColorMixer();
+        }
+      }
+    }, 100);
+  });
+
   if (closeDrawModal) {
     closeDrawModal.addEventListener("click", function () {
       drawModal.style.display = "none";
+      // Reset button to default state (white background)
+      if (drawModeBtn) {
+        drawModeBtn.style.backgroundColor = "#fff";
+        drawModeBtn.style.borderColor = "#e5e5e5";
+        drawModeBtn.style.color = "#171717";
+      }
     });
   }
 
   window.addEventListener("click", function (event) {
     if (event.target === drawModal) {
       drawModal.style.display = "none";
+      // Reset button to default state (white background)
+      if (drawModeBtn) {
+        drawModeBtn.style.backgroundColor = "#fff";
+        drawModeBtn.style.borderColor = "#e5e5e5";
+        drawModeBtn.style.color = "#171717";
+      }
     }
   });
 });
