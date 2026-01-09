@@ -177,7 +177,8 @@ body {
 }
 
 @keyframes rotate-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg) scale(1);
   }
   50% {
@@ -912,11 +913,6 @@ canvas {
   transition: min-width 0.3s ease, max-width 0.3s ease;
   max-height: 100%;
   order: 1;
-}
-
-.simple-modal .fun-controls.all-collapsed {
-  min-width: 280px;
-  max-width: 280px;
 }
 
 .simple-modal .simple-canvas-wrap {
