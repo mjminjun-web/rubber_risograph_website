@@ -54,6 +54,36 @@ document.addEventListener("DOMContentLoaded", function () {
       sessionStorage.setItem("hasSeenWelcome", "true");
     }
   });
+
+  // About project modal
+  const aboutModal = document.getElementById("aboutModal");
+  const aboutProjectBtn = document.getElementById("aboutProjectBtn");
+  const closeAboutBtn = document.getElementById("closeAbout");
+
+  if (aboutProjectBtn) {
+    aboutProjectBtn.addEventListener("click", function () {
+      aboutModal.style.display = "block";
+    });
+  }
+
+  if (closeAboutBtn) {
+    closeAboutBtn.addEventListener("click", function () {
+      aboutModal.style.display = "none";
+    });
+  }
+
+  if (aboutModal) {
+    aboutModal.addEventListener("click", function (e) {
+      if (e.target === aboutModal) {
+        aboutModal.style.display = "none";
+      }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && aboutModal.style.display === "block") {
+        aboutModal.style.display = "none";
+      }
+    });
+  }
 });
 
 // Toggle between scroll and grid view (Grid is default now)
