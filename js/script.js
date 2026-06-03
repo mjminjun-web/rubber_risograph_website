@@ -124,23 +124,23 @@ function showToast(message) {
 
 // Authentic Risograph ink colors (CMYK-like primaries + special colors)
 const RISO_COLORS = {
-  "fluorescent-pink": { r: 255, g: 72, b: 176, name: "Fluorescent Pink" },
-  "fluorescent-orange": { r: 255, g: 102, b: 0, name: "Fluorescent Orange" },
-  sunflower: { r: 255, g: 180, b: 0, name: "Sunflower" },
-  yellow: { r: 255, g: 232, b: 0, name: "Yellow" },
-  "light-lime": { r: 228, g: 255, b: 43, name: "Light Lime" },
-  green: { r: 0, g: 166, b: 81, name: "Green" },
-  teal: { r: 0, g: 169, b: 157, name: "Teal" },
-  aqua: { r: 0, g: 169, b: 224, name: "Aqua" },
-  "sky-blue": { r: 73, g: 180, b: 230, name: "Sky Blue" },
-  blue: { r: 0, g: 120, b: 191, name: "Blue" },
-  violet: { r: 101, g: 50, b: 149, name: "Violet" },
-  purple: { r: 114, g: 65, b: 144, name: "Purple" },
-  burgundy: { r: 145, g: 57, b: 89, name: "Burgundy" },
-  red: { r: 255, g: 72, b: 0, name: "Red" },
-  scarlet: { r: 240, g: 76, b: 60, name: "Scarlet" },
-  "bright-red": { r: 255, g: 53, b: 71, name: "Bright Red" },
-  black: { r: 0, g: 0, b: 0, name: "Black" },
+  "fluorescent-pink":   { r: 255, g: 110, b: 150, name: "Fluorescent Pink" },
+  "fluorescent-orange": { r: 255, g: 116, b: 20,  name: "Fluorescent Orange" },
+  sunflower:            { r: 255, g: 185, b: 0,   name: "Sunflower" },
+  yellow:               { r: 255, g: 230, b: 20,  name: "Yellow" },
+  "light-lime":         { r: 177, g: 210, b: 53,  name: "Light Lime" },
+  green:                { r: 0,   g: 154, b: 75,  name: "Green" },
+  teal:                 { r: 0,   g: 161, b: 154, name: "Teal" },
+  aqua:                 { r: 0,   g: 162, b: 210, name: "Aqua" },
+  "sky-blue":           { r: 98,  g: 185, b: 220, name: "Sky Blue" },
+  blue:                 { r: 0,   g: 100, b: 175, name: "Blue" },
+  violet:               { r: 87,  g: 40,  b: 140, name: "Violet" },
+  purple:               { r: 102, g: 55,  b: 132, name: "Purple" },
+  burgundy:             { r: 134, g: 43,  b: 74,  name: "Burgundy" },
+  red:                  { r: 240, g: 58,  b: 40,  name: "Red" },
+  scarlet:              { r: 228, g: 60,  b: 48,  name: "Scarlet" },
+  "bright-red":         { r: 240, g: 46,  b: 56,  name: "Bright Red" },
+  black:                { r: 30,  g: 28,  b: 28,  name: "Black" },
 };
 
 class ColorMixer {
@@ -675,19 +675,20 @@ class ColorMixer {
   }
 
   createHalftonePattern() {
+    const cellSize = 6;
     const patternCanvas = document.createElement("canvas");
-    patternCanvas.width = 4;
-    patternCanvas.height = 4;
+    patternCanvas.width = cellSize;
+    patternCanvas.height = cellSize;
     const pCtx = patternCanvas.getContext("2d");
 
-    pCtx.fillStyle = "rgba(0, 0, 0, 0.08)";
-    for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; j++) {
-        if (Math.random() > 0.5) {
-          pCtx.fillRect(i, j, 1, 1);
-        }
-      }
-    }
+    const cx = cellSize / 2;
+    const cy = cellSize / 2;
+    const radius = cellSize * 0.28;
+
+    pCtx.fillStyle = "rgba(0, 0, 0, 0.18)";
+    pCtx.beginPath();
+    pCtx.arc(cx, cy, radius, 0, Math.PI * 2);
+    pCtx.fill();
 
     return this.ctx.createPattern(patternCanvas, "repeat");
   }
@@ -699,12 +700,21 @@ class ColorMixer {
     const color = RISO_COLORS[risoColor];
 
     for (let i = 0; i < data.length; i += 4) {
-      const gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
-      const brightness = gray / 255;
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
 
-      data[i] = color.r * brightness;
-      data[i + 1] = color.g * brightness;
-      data[i + 2] = color.b * brightness;
+      const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+      const inkDensity = Math.pow(1 - lum / 255, 1.4);
+
+      const noise = (Math.random() - 0.5) * 18;
+      const density = Math.min(1, Math.max(0, inkDensity + noise / 255));
+
+      const paperR = 248, paperG = 244, paperB = 236;
+
+      data[i]     = Math.round(paperR + (color.r - paperR) * density);
+      data[i + 1] = Math.round(paperG + (color.g - paperG) * density);
+      data[i + 2] = Math.round(paperB + (color.b - paperB) * density);
     }
 
     return imageData;
@@ -840,11 +850,13 @@ class ColorMixer {
   renderCombined() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.ctx.fillStyle = this.paperTone;
+    const paperColor = this.paperTone || "#f8f4ec";
+    this.ctx.fillStyle = paperColor;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-    if (this.halftoneEnabled && this.halftonePattern) {
-      this.ctx.globalAlpha = 0.03;
+    // Paper grain under images
+    if (this.halftonePattern) {
+      this.ctx.globalAlpha = 0.06;
       this.ctx.fillStyle = this.halftonePattern;
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.globalAlpha = 1;
@@ -852,11 +864,12 @@ class ColorMixer {
 
     if (this.image1) {
       this.ctx.globalAlpha = this.opacity1;
-      this.ctx.globalCompositeOperation = "source-over";
+      this.ctx.globalCompositeOperation = "multiply";
       this.drawImageWithTransform(this.image1, this.img1Props);
 
-      if (this.grainIntensity > 0 && this.halftoneEnabled && this.halftonePattern) {
-        this.ctx.globalAlpha = this.grainIntensity * this.opacity1;
+      if (this.halftoneEnabled && this.halftonePattern) {
+        this.ctx.globalAlpha = this.grainIntensity * 0.8;
+        this.ctx.globalCompositeOperation = "multiply";
         this.ctx.fillStyle = this.halftonePattern;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       }
@@ -867,11 +880,20 @@ class ColorMixer {
       this.ctx.globalCompositeOperation = this.blendMode;
       this.drawImageWithTransform(this.image2, this.img2Props);
 
-      if (this.grainIntensity > 0 && this.halftoneEnabled && this.halftonePattern) {
-        this.ctx.globalAlpha = this.grainIntensity * this.opacity2;
+      if (this.halftoneEnabled && this.halftonePattern) {
+        this.ctx.globalAlpha = this.grainIntensity * 0.8;
+        this.ctx.globalCompositeOperation = "multiply";
         this.ctx.fillStyle = this.halftonePattern;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       }
+    }
+
+    // Final grain pass unifies layers like real paper
+    if (this.halftonePattern) {
+      this.ctx.globalAlpha = 0.04;
+      this.ctx.globalCompositeOperation = "source-over";
+      this.ctx.fillStyle = this.halftonePattern;
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     this.ctx.globalAlpha = 1;
