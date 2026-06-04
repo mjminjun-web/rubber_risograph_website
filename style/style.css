@@ -1,11 +1,20 @@
 body {
   margin: 0;
   padding: 0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+  font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 14px;
-  background: #fafafa;
+  background: #f0ebe0;
   color: #171717;
+}
+
+.canvas-side-controls,
+.fun-controls,
+.opacity-control,
+.canvas-control-group,
+select,
+button,
+input {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 /* Navigation Bar */
@@ -75,27 +84,29 @@ body {
 
 /* Hero Section */
 .hero-section {
-  background: #fff;
-  border-bottom: 1px solid #e5e5e5;
-  color: #fafafa;
+  background: #ede8d5;
+  border-bottom: 1px solid #d4cdb8;
+  color: #1a1410;
   padding: 12px 17px;
   text-align: center;
   position: relative;
 }
 
 .hero-title {
+  font-family: 'Georgia', serif;
   font-size: 32px;
-  font-weight: 600;
+  font-weight: 700;
   margin: 0 0 8px 0;
-  letter-spacing: -0.02em;
-  color: #000000;
+  letter-spacing: -0.01em;
+  color: #1a1410;
 }
 
 .hero-subtitle {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 15px;
   font-weight: 400;
   margin: 0 0 24px 0;
-  color: #737373;
+  color: #5a5040;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
@@ -117,7 +128,7 @@ body {
   background: #fff;
   color: #171717;
   border: 1px solid #e5e5e5;
-  border-radius: 6px;
+  border-radius: 3px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -134,7 +145,7 @@ body {
   background: #fff;
   color: #171717;
   border: 1px solid #e5e5e5;
-  border-radius: 6px;
+  border-radius: 3px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -155,6 +166,7 @@ body {
   gap: 1.5rem;
   max-width: 1400px;
   margin: 0 auto;
+  background: #ede8d5;
 }
 
 .content.scroll-view {
@@ -177,8 +189,8 @@ body {
   height: auto;
   object-fit: contain;
   margin-bottom: 0;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(60, 45, 20, 0.18);
   transition: all 0.3s ease;
   cursor: pointer;
 }
@@ -200,8 +212,8 @@ body {
 }
 
 .content img:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(60, 45, 20, 0.22);
 }
 
 /* Rotation Prompt for Mobile */
@@ -370,7 +382,7 @@ body {
   background: #171717;
   color: #fff;
   border: 1px solid #171717;
-  border-radius: 6px;
+  border-radius: 3px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
@@ -385,12 +397,12 @@ body {
 }
 
 .modal-content {
-  background: #fff;
+  background: #f5f0e8;
   margin: 2% auto;
   width: 95%;
   max-width: 1400px;
   border-radius: 12px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #d4cdb8;
   box-shadow:
     0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -1035,7 +1047,7 @@ canvas {
   background: #171717;
   color: white;
   border: 1px solid #171717;
-  border-radius: 6px;
+  border-radius: 3px;
   cursor: pointer;
   font-size: 11px;
   font-weight: 500;
@@ -1708,6 +1720,7 @@ canvas {
   min-height: 0;
   min-width: 0;
   height: 100%;
+  background: #e8e2d4;
 }
 
 #mainCanvas {

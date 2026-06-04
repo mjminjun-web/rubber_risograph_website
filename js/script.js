@@ -213,7 +213,7 @@ class ColorMixer {
     this.separationMode = false;
 
     // Paper tone
-    this.paperTone = '#faf8f4';
+    this.paperTone = '#ede8d5';
 
     // Blend mode
     this.blendMode = "multiply"; // Default to multiply for authentic riso look
@@ -388,8 +388,16 @@ class ColorMixer {
       .addEventListener("click", () => this.toggleSeparationMode());
 
     // Paper tone selector
+    const paperTones = {
+      'warm-white': '#f5f0e8',
+      'cream':      '#ede8d5',
+      'newsprint':  '#e0d9c0',
+      'pale-pink':  '#eed8d0',
+      'light-blue': '#d4e4ea',
+      'kraft':      '#c8b48a',
+    };
     document.getElementById("paperToneSelect").addEventListener("change", (e) => {
-      this.paperTone = e.target.value;
+      this.paperTone = paperTones[e.target.value] || '#ede8d5';
       this.render();
     });
 
@@ -715,7 +723,7 @@ class ColorMixer {
     const cy = cellSize / 2;
     const radius = cellSize * 0.28;
 
-    pCtx.fillStyle = "rgba(0, 0, 0, 0.18)";
+    pCtx.fillStyle = "rgba(0, 0, 0, 0.20)";
     pCtx.beginPath();
     pCtx.arc(cx, cy, radius, 0, Math.PI * 2);
     pCtx.fill();
@@ -723,11 +731,16 @@ class ColorMixer {
     return this.ctx.createPattern(patternCanvas, "repeat");
   }
 
-  applyRisoColorTint(imageData, risoColor) {
+  applyRisoColorTint(imageData, risoColor, paperColor) {
     if (!risoColor) return imageData;
 
     const data = imageData.data;
     const color = RISO_COLORS[risoColor];
+
+    const paper = paperColor || '#ede8d5';
+    const pr = parseInt(paper.slice(1, 3), 16);
+    const pg = parseInt(paper.slice(3, 5), 16);
+    const pb = parseInt(paper.slice(5, 7), 16);
 
     for (let i = 0; i < data.length; i += 4) {
       const r = data[i];
@@ -737,14 +750,12 @@ class ColorMixer {
       const lum = 0.299 * r + 0.587 * g + 0.114 * b;
       const inkDensity = Math.pow(1 - lum / 255, 1.4);
 
-      const noise = (Math.random() - 0.5) * 18;
+      const noise = (Math.random() - 0.5) * 20;
       const density = Math.min(1, Math.max(0, inkDensity + noise / 255));
 
-      const paperR = 248, paperG = 244, paperB = 236;
-
-      data[i]     = Math.round(paperR + (color.r - paperR) * density);
-      data[i + 1] = Math.round(paperG + (color.g - paperG) * density);
-      data[i + 2] = Math.round(paperB + (color.b - paperB) * density);
+      data[i]     = Math.round(pr + (color.r - pr) * density);
+      data[i + 1] = Math.round(pg + (color.g - pg) * density);
+      data[i + 2] = Math.round(pb + (color.b - pb) * density);
     }
 
     return imageData;
@@ -772,7 +783,7 @@ class ColorMixer {
   renderSeparated() {
     // Show each color layer separately side by side
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.fillStyle = "#fff";
+    this.ctx.fillStyle = this.paperTone || '#ede8d5';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     const halfWidth = this.canvas.width / 2;
@@ -880,13 +891,13 @@ class ColorMixer {
   renderCombined() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    const paperColor = this.paperTone || "#f8f4ec";
+    const paperColor = this.paperTone || '#ede8d5';
     this.ctx.fillStyle = paperColor;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
     // Paper grain under images
     if (this.halftonePattern) {
-      this.ctx.globalAlpha = 0.06;
+      this.ctx.globalAlpha = 0.07;
       this.ctx.fillStyle = this.halftonePattern;
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.globalAlpha = 1;
@@ -898,7 +909,7 @@ class ColorMixer {
       this.drawImageWithTransform(this.image1, this.img1Props);
 
       if (this.halftoneEnabled && this.halftonePattern) {
-        this.ctx.globalAlpha = this.grainIntensity * 0.8;
+        this.ctx.globalAlpha = this.grainIntensity * 0.9;
         this.ctx.globalCompositeOperation = "multiply";
         this.ctx.fillStyle = this.halftonePattern;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -911,7 +922,7 @@ class ColorMixer {
       this.drawImageWithTransform(this.image2, this.img2Props);
 
       if (this.halftoneEnabled && this.halftonePattern) {
-        this.ctx.globalAlpha = this.grainIntensity * 0.8;
+        this.ctx.globalAlpha = this.grainIntensity * 0.9;
         this.ctx.globalCompositeOperation = "multiply";
         this.ctx.fillStyle = this.halftonePattern;
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -960,7 +971,7 @@ class ColorMixer {
 
       // Get image data and apply riso color tint
       const imageData = tempCtx.getImageData(0, 0, w, h);
-      this.applyRisoColorTint(imageData, props.risoColor);
+      this.applyRisoColorTint(imageData, props.risoColor, this.paperTone);
       tempCtx.putImageData(imageData, 0, 0);
 
       // Draw tinted image
