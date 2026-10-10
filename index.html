@@ -122,7 +122,7 @@
     <div id="drawModal" class="modal">
       <div class="modal-content simple-modal">
         <div class="modal-header">
-          <h2>Image Overlay</h2>
+          <h2>Riso Print Studio</h2>
           <span class="close" id="closeDrawModal">&times;</span>
         </div>
         <div class="modal-body">
@@ -133,7 +133,7 @@
             <!-- Image 1 Controls -->
             <div class="image-control-group">
               <div class="control-group-header" data-target="controls1">
-                <span>Image 1</span>
+                <span>Ink Layer 1</span>
                 <span class="collapse-icon">▼</span>
               </div>
               <div class="control-group-content" id="controls1">
@@ -151,7 +151,7 @@
                     class="img-btn"
                     title="Choose from gallery"
                   >
-                    <span class="btn-icon">📁</span> Select from Gallery
+                    Select from Gallery
                   </button>
                   <input
                     type="file"
@@ -164,7 +164,7 @@
                     class="img-btn"
                     title="Upload your own image"
                   >
-                    <span class="btn-icon">⬆️</span> Upload Image
+                    <span class="btn-icon" aria-hidden="true">↑</span> Upload Image
                   </button>
                 </div>
                 <div class="button-group mobile-only">
@@ -172,8 +172,8 @@
                   <button id="rotateImg1Right" class="img-btn rotate-btn" title="Rotate Image 1 clockwise">↻ Rotate Right</button>
                 </div>
                 <div class="opacity-control">
-                  <label title="Adjust transparency of Image 1">
-                    <span class="control-icon">👁️</span> Opacity:
+                  <label title="Simulated ink density for layer 1">
+                    Ink coverage
                     <span id="opacity1Value">100%</span>
                   </label>
                   <input
@@ -182,7 +182,7 @@
                     min="0"
                     max="100"
                     value="100"
-                    aria-label="Image 1 opacity"
+                    aria-label="Ink layer 1 coverage"
                   />
                 </div>
                 <div class="opacity-control">
@@ -190,12 +190,12 @@
                     style="font-size: 11px"
                     title="Apply risograph ink color effect"
                   >
-                    <span class="control-icon">🎨</span> Riso Ink:
+                    Ink Color:
                   </label>
                   <select
                     id="risoColor1Select"
                     class="riso-color-select"
-                    aria-label="Riso ink color for Image 1"
+                    aria-label="Ink color for layer 1"
                   >
                     <option value="">Original Color</option>
                     <option value="fluorescent-pink">Fluorescent Pink</option>
@@ -219,10 +219,11 @@
                     <option value="black">Black</option>
                   </select>
                 </div>
+                <div class="registration-heading">Shift this layer</div>
                 <div class="opacity-control">
-                  <label title="Horizontal position offset">
-                    <span class="control-icon">↔️</span> ← →
-                    <span id="offsetX1Value">0</span>
+                  <label for="offsetX1Slider" title="Move the image left or right">
+                    Left / right
+                    <span><span id="offsetX1Value">0</span> px</span>
                   </label>
                   <input
                     type="range"
@@ -234,9 +235,9 @@
                   />
                 </div>
                 <div class="opacity-control">
-                  <label title="Vertical position offset">
-                    <span class="control-icon">↕️</span> ↑ ↓
-                    <span id="offsetY1Value">0</span>
+                  <label for="offsetY1Slider" title="Move the image up or down">
+                    Up / down
+                    <span><span id="offsetY1Value">0</span> px</span>
                   </label>
                   <input
                     type="range"
@@ -258,7 +259,7 @@
             <!-- Image 2 Controls -->
             <div class="image-control-group">
               <div class="control-group-header" data-target="controls2">
-                <span>Image 2</span>
+                <span>Ink Layer 2</span>
                 <span class="collapse-icon">▼</span>
               </div>
               <div class="control-group-content" id="controls2">
@@ -276,7 +277,7 @@
                     class="img-btn"
                     title="Choose from gallery"
                   >
-                    <span class="btn-icon">📁</span> Select from Gallery
+                    Select from Gallery
                   </button>
                   <input
                     type="file"
@@ -289,7 +290,7 @@
                     class="img-btn"
                     title="Upload your own image"
                   >
-                    <span class="btn-icon">⬆️</span> Upload Image
+                    <span class="btn-icon" aria-hidden="true">↑</span> Upload Image
                   </button>
                 </div>
                 <div class="button-group mobile-only">
@@ -297,8 +298,8 @@
                   <button id="rotateImg2Right" class="img-btn rotate-btn" title="Rotate Image 2 clockwise">↻ Rotate Right</button>
                 </div>
                 <div class="opacity-control">
-                  <label title="Adjust transparency of Image 2">
-                    <span class="control-icon">👁️</span> Opacity:
+                  <label title="Simulated ink density for layer 2">
+                    Ink coverage
                     <span id="opacity2Value">100%</span>
                   </label>
                   <input
@@ -307,7 +308,7 @@
                     min="0"
                     max="100"
                     value="100"
-                    aria-label="Image 2 opacity"
+                    aria-label="Ink layer 2 coverage"
                   />
                 </div>
                 <div class="opacity-control">
@@ -315,12 +316,12 @@
                     style="font-size: 11px"
                     title="Apply risograph ink color effect"
                   >
-                    <span class="control-icon">🎨</span> Riso Ink:
+                    Ink Color:
                   </label>
                   <select
                     id="risoColor2Select"
                     class="riso-color-select"
-                    aria-label="Riso ink color for Image 2"
+                    aria-label="Ink color for layer 2"
                   >
                     <option value="">Original Color</option>
                     <option value="fluorescent-pink">Fluorescent Pink</option>
@@ -344,10 +345,11 @@
                     <option value="black">Black</option>
                   </select>
                 </div>
+                <div class="registration-heading">Shift this layer</div>
                 <div class="opacity-control">
-                  <label title="Horizontal position offset">
-                    <span class="control-icon">↔️</span> ← →
-                    <span id="offsetX2Value">0</span>
+                  <label for="offsetX2Slider" title="Move the image left or right">
+                    Left / right
+                    <span><span id="offsetX2Value">0</span> px</span>
                   </label>
                   <input
                     type="range"
@@ -359,9 +361,9 @@
                   />
                 </div>
                 <div class="opacity-control">
-                  <label title="Vertical position offset">
-                    <span class="control-icon">↕️</span> ↑ ↓
-                    <span id="offsetY2Value">0</span>
+                  <label for="offsetY2Slider" title="Move the image up or down">
+                    Up / down
+                    <span><span id="offsetY2Value">0</span> px</span>
                   </label>
                   <input
                     type="range"
@@ -392,26 +394,59 @@
                   Select two images to begin creating
                 </p>
               </div>
-              <div class="start-hint" id="startHint">✨ Hit "Surprise Me!" to see it in action</div>
+              <div class="start-hint" id="startHint">Try Surprise Me for a new combination</div>
             </div>
 
             <!-- Controls on the right -->
             <div class="canvas-side-controls">
               <div class="canvas-top-actions">
+                <button id="surpriseMeBtn" class="surprise-btn" title="Apply random settings">
+                  <span class="btn-icon" aria-hidden="true">⤨</span> Surprise Me!
+                </button>
                 <button
                   id="saveBtn"
                   class="save-btn-small"
-                  title="Download your creation"
+                  title="Save or print your creation"
                 >
-                  <span class="btn-icon">💾</span> Save
+                  <span class="btn-icon" aria-hidden="true">↓</span> Save
                 </button>
+                <button id="undoPrintBtn" class="clear-btn-small" type="button" disabled>Undo</button>
                 <button
                   id="clearBtn"
                   class="clear-btn-small"
                   title="Reset everything"
                 >
-                  <span class="btn-icon">🗑️</span> Clear
+                  Clear
                 </button>
+              </div>
+
+              <dialog id="saveChoices" aria-labelledby="saveChoicesTitle">
+                <h2 id="saveChoicesTitle">Save your print</h2>
+                <button id="downloadPrintBtn" type="button" class="img-btn">Download PNG</button>
+                <button id="printPrintBtn" type="button" class="img-btn">Print</button>
+                <button id="closeSaveChoices" type="button" class="clear-btn-small">Cancel</button>
+              </dialog>
+              <div class="paper-format-controls">
+                <label for="paperSizeSelect">Paper size</label>
+                <select id="paperSizeSelect" class="blend-select">
+                  <option value="original">Original</option>
+                  <option value="a5">A5 (148 × 210 mm)</option>
+                  <option value="a4">A4 (210 × 297 mm)</option>
+                  <option value="a3">A3 (297 × 420 mm)</option>
+                  <option value="letter">Letter (8.5 × 11 in)</option>
+                </select>
+                <label for="paperOrientationSelect">Orientation</label>
+                <select id="paperOrientationSelect" class="blend-select">
+                  <option value="landscape">Landscape</option>
+                  <option value="portrait">Portrait</option>
+                </select>
+                <output id="paperSizeOutput" for="paperSizeSelect paperOrientationSelect">1200 × 800 px</output>
+              </div>
+              <div class="starting-looks" role="group" aria-label="Starting looks">
+                <h3>Starting looks</h3>
+                <button type="button" class="img-btn" data-look="clean">Clean Print</button>
+                <button type="button" class="img-btn" data-look="grainy">Grainy Print</button>
+                <button type="button" class="img-btn" data-look="shifted">Shifted Layers</button>
               </div>
 
               <!-- Effects Section - Collapsible -->
@@ -420,7 +455,7 @@
                   class="control-group-header collapsed"
                   data-target="effectsContent"
                 >
-                  <span>Effects</span>
+                  <span>Advanced Effects</span>
                   <span class="collapse-icon">▼</span>
                 </div>
                 <div
@@ -437,21 +472,21 @@
                         class="fun-btn dots"
                         title="Create random dot pattern"
                       >
-                        <span class="btn-icon">⚫</span> Random Dots
+                        Random Dots
                       </button>
                       <button
                         id="randomLinesBtn"
                         class="fun-btn lines"
                         title="Create random line pattern"
                       >
-                        <span class="btn-icon">➖</span> Random Lines
+                        Random Lines
                       </button>
                       <button
                         id="mixColorsBtn"
                         class="fun-btn mix"
                         title="Mix colors from images"
                       >
-                        <span class="btn-icon">🌈</span> Color Mix
+                        Color Mix
                       </button>
                     </div>
                   </div>
@@ -464,16 +499,16 @@
                   class="control-group-header collapsed"
                   data-target="controls3"
                 >
-                  <span>⚙️ Risograph Settings</span>
+                  <span>Risograph Settings</span>
                   <span class="collapse-icon">▼</span>
                 </div>
                 <div class="control-group-content collapsed" id="controls3">
                   <label style="font-weight: 600; font-size: 11px"
-                    >How inks overlap:</label
+                    >Blend Mode:</label
                   >
                   <select id="blendModeSelect" class="blend-select">
                     <option value="normal">Normal</option>
-                    <option value="multiply" selected>Layered (recommended)</option>
+                    <option value="multiply" selected>Overprint (Multiply)</option>
                     <option value="screen">Screen</option>
                     <option value="overlay">Overlay</option>
                     <option value="darken">Darken</option>
@@ -488,7 +523,7 @@
 
                   <label
                     style="font-weight: 600; font-size: 11px; margin-top: 8px"
-                    >Paper Tone:</label
+                    >Paper Stock:</label
                   >
                   <select id="paperToneSelect" class="blend-select">
                     <option value="warm-white">Warm White</option>
@@ -501,7 +536,7 @@
 
                   <label
                     style="font-weight: 600; font-size: 11px; margin-top: 8px"
-                    >Shift layers apart:</label
+                    >Misregistration:</label
                   >
                   <div class="misreg-presets">
                     <button class="misreg-btn" data-preset="subtle">
@@ -523,7 +558,7 @@
 
                   <div class="opacity-control">
                     <label title="Grain texture intensity">
-                      <span class="control-icon">🌾</span> Grain:
+                      Grain:
                       <span id="grainValue">15%</span>
                     </label>
                     <input
@@ -544,14 +579,7 @@
                     class="separation-btn"
                     title="View layers separately"
                   >
-                    <span class="btn-icon">👁️</span> See each layer
-                  </button>
-                  <button
-                    id="surpriseMeBtn"
-                    class="surprise-btn"
-                    title="Apply random settings"
-                  >
-                    <span class="btn-icon">🎲</span> Surprise Me!
+                    View Separations
                   </button>
                 </div>
               </div>

@@ -135,6 +135,33 @@ input {
   transition: all 0.15s ease;
 }
 
+#drawMode,
+#toggleView {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.22));
+  border-color: rgba(255, 255, 255, 0.85);
+  border-radius: 6px;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 rgba(0, 0, 0, 0.06), 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+#drawMode:hover,
+#toggleView:hover {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.38));
+  border-color: #fff;
+}
+
+#drawMode:focus-visible,
+#toggleView:focus-visible {
+  outline: 2px solid #171717;
+  outline-offset: 3px;
+}
+
+#drawMode:active,
+#toggleView:active {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .hero-btn-primary:hover {
   border-color: #d4d4d4;
   background: #fafafa;
@@ -1334,7 +1361,7 @@ canvas {
 .image-preview-slot img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 8px;
 }
 
@@ -1614,7 +1641,7 @@ canvas {
 .riso-settings {
   background: #fafafa;
   border: 1px solid #e5e5e5;
-  padding: 12px;
+  padding: 0;
   border-radius: 8px;
 }
 
@@ -1724,8 +1751,9 @@ canvas {
 }
 
 #mainCanvas {
-  border: 2px solid #333;
-  border-radius: 4px;
+  border: 1px solid #d4cdb8;
+  border-radius: 2px;
+  box-shadow: 0 3px 12px rgba(60, 45, 20, 0.1);
   max-width: 100%;
   max-height: 100%;
   background: white;
@@ -2272,6 +2300,193 @@ input[type="range"]::-moz-range-thumb {
 }
 
 /* Logo lockups and studio header spacing */
+/* Keep ink and position controls inside their narrow panels. */
+.paper-format-controls {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 16px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+.paper-format-controls label { font-size: 12px; font-weight: 600; }
+.paper-format-controls label:not(:first-child) { margin-top: 8px; }
+#drawModal .paper-format-controls select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 32px 10px 12px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #737373 50%), linear-gradient(135deg, #737373 50%, transparent 50%);
+  background-position: calc(100% - 16px) 50%, calc(100% - 12px) 50%;
+  background-size: 4px 4px;
+  background-repeat: no-repeat;
+}
+.paper-format-controls output {
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #525252;
+  overflow-wrap: anywhere;
+}
+#drawModal .opacity-control:has(input[id^="opacity"]) label {
+  width: 100%;
+  justify-content: space-between;
+  text-shadow: none;
+  font-variant-numeric: tabular-nums;
+}
+#drawModal input[id^="opacity"] {
+  height: 6px;
+  border-radius: 2px;
+}
+.coverage-strip {
+  flex: 0 0 100%;
+  height: 8px;
+  margin-top: 8px;
+  position: relative;
+}
+.coverage-strip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(to right, #171717 0 1px, transparent 1px 25%);
+  opacity: 0.35;
+}
+#drawModal .canvas-top-actions .surprise-btn {
+  background: #ff6b6b;
+  color: #171717;
+  border: 1px solid #171717;
+  box-shadow: none;
+}
+#drawModal .canvas-top-actions .surprise-btn:hover { background: #ff6b6b; filter: brightness(0.96); }
+#drawModal .starting-looks .img-btn {
+  background: transparent;
+  color: #171717;
+  border: 1px solid #d4d4d4;
+  box-shadow: none;
+}
+#drawModal .starting-looks .img-btn:hover { background: #fafafa; border-color: #171717; }
+.ink-swatch-picker { margin-top: 0; min-width: 0; width: 100%; }
+.ink-swatch-picker summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  cursor: pointer;
+  font-size: 12px;
+  min-height: 44px;
+  padding: 10px 34px 10px 12px;
+  box-sizing: border-box;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  list-style: none;
+}
+.ink-swatch-picker summary::-webkit-details-marker { display: none; }
+.ink-swatch-picker summary::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 6px solid #737373;
+}
+.ink-swatch-picker[open] summary::after { transform: rotate(180deg); }
+.ink-swatch-picker summary:focus-visible,
+.ink-swatch-list button:focus-visible { outline: 2px solid #171717; outline-offset: 2px; }
+.ink-swatch-picker[open] .ink-swatch-list { margin-top: 8px; }
+#drawModal .opacity-control:has(.ink-swatch-picker)::after { display: none; }
+#drawModal .riso-color-select[hidden] { display: none; }
+.ink-swatch-list { display: grid; gap: 4px; max-height: 240px; overflow-y: auto; }
+.ink-swatch-list button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  min-width: 0;
+  text-align: left;
+  background: #fff;
+  color: #171717;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+}
+.ink-swatch-list button[aria-pressed="true"] { border-color: #171717; background: #fafafa; }
+.ink-chip { width: 18px; height: 18px; flex: 0 0 18px; border: 1px solid #0002; border-radius: 50%; }
+.starting-looks { display: grid; gap: 6px; }
+.starting-looks h3 { margin: 8px 0 4px; font-size: 12px; }
+#drawModal .canvas-top-actions { display: flex; flex-direction: column; gap: 8px; }
+#drawModal .canvas-top-actions .surprise-btn { margin: 0; width: 100%; box-sizing: border-box; }
+.registration-heading {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e5e5;
+  font-size: 12px;
+  font-weight: 600;
+  color: #171717;
+}
+#drawModal .opacity-control:has(input[id^="opacity"]) {
+  flex-wrap: wrap;
+}
+#drawModal .opacity-control:has(input[id^="opacity"]) label {
+  gap: 4px;
+}
+#drawModal .opacity-control input[id^="opacity"] {
+  flex-basis: 100%;
+  width: 100%;
+}
+#controls1 .opacity-control:has(select),
+#controls2 .opacity-control:has(select),
+#controls1 .opacity-control:has(input[id^="offset"]),
+#controls2 .opacity-control:has(input[id^="offset"]) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  min-width: 0;
+  margin-top: 10px;
+}
+#controls1 .riso-color-select,
+#controls2 .riso-color-select {
+  width: 100%;
+  min-width: 0;
+  margin-top: 0;
+}
+.opacity-control label[for^="offset"] {
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+  white-space: normal;
+}
+.opacity-control input[id^="offset"] {
+  width: 100%;
+  margin: 0;
+}
+#drawModal .simple-canvas-wrap {
+  box-sizing: border-box;
+}
+#drawModal .canvas-container {
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 12px 12px 48px;
+  margin: 0;
+}
+#drawModal #mainCanvas {
+  box-sizing: border-box;
+  min-width: 0;
+}
+#drawModal .start-hint {
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  transform: none;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+}
 /* Unframed prints retain their original proportions in grid view. */
 #galleryContainer:not(.scroll-view) > img {
   box-sizing: border-box;
@@ -2390,7 +2605,7 @@ input[type="range"]::-moz-range-thumb {
   padding: 16px 24px;
   gap: 20px;
   flex-shrink: 0;
-  min-height: 64px;
+  min-height: 60px;
   box-sizing: border-box;
 }
 #drawModal .modal-header h2 {
@@ -2403,10 +2618,227 @@ input[type="range"]::-moz-range-thumb {
   align-items: center;
   justify-content: center;
   flex: 0 0 36px;
-  height: 36px;
+  height: 28px;
   line-height: 1;
 }
 @media (max-width: 600px) {
   #welcomeModal h2.welcome-logo { max-width: 260px; }
   #drawModal .modal-header { padding: 12px 16px; }
+}
+
+/* Keep the first view focused on ink and artwork. */
+#drawModal .studio-adjust > summary,
+#drawModal .image-sources > summary {
+  padding: 12px 0;
+  cursor: pointer;
+  font: 600 12px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+#drawModal .image-sources .button-group { margin-bottom: 12px; }
+#drawModal .studio-adjust { min-width: 0; width: 100%; }
+#drawModal .studio-adjust > .opacity-control {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+#drawModal .studio-adjust > .opacity-control label {
+  display: flex;
+  justify-content: space-between;
+  min-width: 0;
+}
+#drawModal .studio-adjust input[type="range"] { width: 100%; min-width: 0; }
+#drawModal .studio-adjust #clearBtn { width: 100%; margin-top: 20px; }
+#drawModal #undoPrintBtn:disabled { opacity: 0.4; cursor: default; }
+#drawModal .coverage-strip,
+#drawModal #startHint { display: none; }
+#saveChoices {
+  width: min(320px, calc(100% - 48px));
+  box-sizing: border-box;
+  padding: 24px;
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+  background: #f5f0e8;
+}
+#saveChoices::backdrop { background: #0006; }
+#saveChoices h2 { font-size: 20px; margin: 0 0 20px; }
+#saveChoices button { display: block; width: 100%; margin-top: 10px; }
+
+/* Responsive studio: bounded desktop columns, stacked small-screen tools. */
+#drawModal .simple-modal {
+  box-sizing: border-box;
+  width: calc(100% - 24px) !important;
+  max-width: 1600px !important;
+  height: calc(100dvh - 24px) !important;
+  max-height: calc(100dvh - 24px);
+  margin: 12px auto !important;
+  overflow: hidden;
+}
+#drawModal .modal-body {
+  box-sizing: border-box;
+  height: auto;
+  min-width: 0;
+}
+#drawModal .fun-controls,
+#drawModal .canvas-side-controls {
+  box-sizing: border-box;
+  width: 220px;
+  min-width: 0;
+  max-width: 220px;
+  padding: 12px;
+}
+#drawModal .simple-canvas-wrap {
+  padding: 8px;
+  height: 100%;
+  min-width: 0;
+}
+#risoColor1Select,
+#risoColor2Select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 10px 34px 10px 12px;
+  background-image: none;
+}
+#drawModal .opacity-control:has(.riso-color-select) {
+  position: relative;
+}
+#drawModal .opacity-control:has(.riso-color-select)::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  bottom: 0;
+  width: 10px;
+  height: 36px;
+  background: #737373;
+  clip-path: polygon(10% 42%, 90% 42%, 50% 60%);
+  pointer-events: none;
+}
+#drawModal .control-group-header {
+  padding: 12px;
+  gap: 12px;
+}
+#drawModal .collapse-icon {
+  flex: 0 0 10px;
+  width: 10px;
+  text-align: center;
+}
+
+/* Flat tool sections keep the paper preview as the main raised surface. */
+#drawModal .image-control-group,
+#drawModal .canvas-control-group {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
+  border-radius: 0;
+  box-shadow: none;
+}
+#drawModal .control-group-header {
+  background: transparent;
+  box-shadow: none;
+}
+#drawModal .control-group-header:hover { background: #fafafa; }
+#drawModal .fun-controls,
+#drawModal .canvas-side-controls { box-shadow: none; }
+#drawModal .fun-controls {
+  background: rgba(250, 248, 244, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+@supports ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+  #drawModal .fun-controls {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.64), rgba(245, 240, 232, 0.38));
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  #drawModal .fun-controls {
+    background: #faf8f4;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+#drawModal #selectImage1,
+#drawModal #selectImage2,
+#drawModal #uploadImage1Btn,
+#drawModal #uploadImage2Btn {
+  background: transparent;
+  color: #171717;
+  border: 1px solid #d4d4d4;
+  box-shadow: none;
+}
+#drawModal #selectImage1:hover,
+#drawModal #selectImage2:hover,
+#drawModal #uploadImage1Btn:hover,
+#drawModal #uploadImage2Btn:hover {
+  background: #fafafa;
+  border-color: #737373;
+}
+#drawModal .modal-header .close { min-height: 44px; margin-block: -8px; }
+@media (max-width: 520px) {
+  #drawModal .opacity-control:has(.riso-color-select)::after { height: 44px; }
+}
+@media (max-width: 1100px) {
+  #drawModal .canvas-side-controls { width: 180px; max-width: 180px; padding: 10px; }
+  #drawModal .fun-controls { width: 200px; max-width: 200px; padding: 10px; }
+}
+@media (max-width: 900px) {
+  #drawModal .modal-body {
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  #drawModal .simple-canvas-wrap {
+    order: 1;
+    flex: none;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    overflow: visible;
+  }
+  #drawModal .canvas-container {
+    flex: none;
+    width: 100%;
+    height: auto;
+    min-height: 240px;
+    padding: 16px 16px 44px;
+  }
+  #drawModal #mainCanvas {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 600px;
+    max-height: none;
+  }
+  #drawModal .canvas-side-controls {
+    width: 100%;
+    max-width: none;
+    height: auto;
+    overflow: visible;
+  }
+  #drawModal .fun-controls {
+    order: 2;
+    flex: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    height: auto;
+    overflow: visible;
+  }
+}
+@media (max-width: 520px) {
+  #drawModal .simple-modal {
+    width: 100% !important;
+    height: 100dvh !important;
+    max-height: 100dvh;
+    margin: 0 !important;
+    border-radius: 0;
+  }
+  #drawModal .fun-controls { grid-template-columns: 1fr; }
+  #drawModal .modal-body { padding: 8px; }
+  #drawModal .simple-canvas-wrap { padding: 0; }
+  #drawModal button,
+  #drawModal select { min-height: 44px; }
+  #drawModal .riso-color-select { font-size: 16px; }
 }

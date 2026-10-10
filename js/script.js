@@ -100,17 +100,9 @@ toggleButton.addEventListener("click", function () {
   if (isScrollView) {
     galleryContainer.classList.add("scroll-view");
     toggleButton.textContent = "Switch to Grid View";
-    // Change button to active state (black background)
-    toggleButton.style.backgroundColor = "#000";
-    toggleButton.style.borderColor = "#000";
-    toggleButton.style.color = "#fff";
   } else {
     galleryContainer.classList.remove("scroll-view");
     toggleButton.textContent = "Switch to Scroll View";
-    // Reset button to default state
-    toggleButton.style.backgroundColor = "#fff";
-    toggleButton.style.borderColor = "#e5e5e5";
-    toggleButton.style.color = "#171717";
   }
 });
 
@@ -289,7 +281,7 @@ class ColorMixer {
       .addEventListener("click", () => this.clear());
     document
       .getElementById("saveBtn")
-      .addEventListener("click", () => this.save());
+      .addEventListener("click", () => document.getElementById('saveChoices').showModal());
 
     // Picker
     document
@@ -439,7 +431,233 @@ class ColorMixer {
     this.canvas.addEventListener("touchend", () => this.onTouchEnd());
 
     this.render();
+    this.initInkSwatches();
+    document.getElementById('paperSizeSelect').addEventListener('change', () => this.updatePaperSize());
+    document.getElementById('paperOrientationSelect').addEventListener('change', () => this.updatePaperSize());
+    [1, 2].forEach((slot) => {
+      const slider = document.getElementById(`opacity${slot}Slider`);
+      const strip = document.createElement('div');
+      strip.className = 'coverage-strip';
+      strip.setAttribute('aria-hidden', 'true');
+      slider.insertAdjacentElement('afterend', strip);
+    });
+    document.querySelectorAll('[data-look]').forEach((button) => {
+      button.addEventListener('click', () => this.applyStartingLook(button.dataset.look));
+    });
+    this.initSimpleStudio();
     this.loadDefaults();
+  }
+
+  initSimpleStudio() {
+    const modal = document.getElementById('drawModal');
+    const side = modal.querySelector('.canvas-side-controls');
+    const adjust = document.createElement('details');
+    adjust.className = 'studio-adjust';
+    const summary = document.createElement('summary');
+    summary.textContent = 'Adjust print';
+    adjust.append(summary);
+    [...side.children].filter(node => !node.classList.contains('canvas-top-actions') && node.tagName !== 'DIALOG').forEach(node => adjust.append(node));
+    side.append(adjust);
+    [1, 2].forEach(slot => {
+      const controls = document.getElementById(`controls${slot}`);
+      const heading = controls.querySelector('.registration-heading');
+      heading.textContent = `Shift ink layer ${slot}`;
+      const x = heading.nextElementSibling;
+      const y = x.nextElementSibling;
+      adjust.append(heading, x, y);
+      const buttons = controls.querySelector('.button-group');
+      const sources = document.createElement('details');
+      sources.className = 'image-sources';
+      const label = document.createElement('summary');
+      label.textContent = 'Change image';
+      sources.append(label, buttons);
+      controls.prepend(sources);
+      sources.before(document.getElementById(`preview${slot}`));
+    });
+    adjust.append(document.getElementById('clearBtn'));
+    side.querySelector('.canvas-top-actions').append(document.getElementById('undoPrintBtn'), document.getElementById('saveBtn'));
+    this.undoHistory = [];
+    const remember = () => this.rememberPrint();
+    modal.addEventListener('pointerdown', event => {
+      if (event.target.matches('input[type="range"], canvas')) remember();
+    }, true);
+    modal.addEventListener('keydown', event => {
+      if (event.target.matches('input[type="range"], canvas') && ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key) && !event.repeat) remember();
+    }, true);
+    modal.addEventListener('change', event => {
+      if (event.target.matches('select, input[type="file"]')) remember();
+    }, true);
+    modal.addEventListener('click', event => {
+      const button = event.target.closest('button');
+      if (button && !button.closest('dialog') && !['undoPrintBtn', 'saveBtn', 'selectImage1', 'selectImage2', 'uploadImage1Btn', 'uploadImage2Btn'].includes(button.id) && !button.hasAttribute('data-ink')) remember();
+    }, true);
+    document.getElementById('imagePickerOverlay').addEventListener('click', event => {
+      if (event.target.matches('img')) remember();
+    }, true);
+    document.getElementById('undoPrintBtn').addEventListener('click', () => this.undoPrint());
+    document.getElementById('downloadPrintBtn').addEventListener('click', () => this.save());
+    document.getElementById('printPrintBtn').addEventListener('click', () => this.printArtwork());
+    document.getElementById('closeSaveChoices').addEventListener('click', () => document.getElementById('saveChoices').close());
+  }
+
+  rememberPrint() {
+    const keys = ['image1', 'image2', 'opacity1', 'opacity2', 'blendMode', 'paperTone', 'grainIntensity', 'halftoneEnabled', 'separationMode'];
+    const state = Object.fromEntries(keys.map(key => [key, this[key]]));
+    state.img1Props = { ...this.img1Props };
+    state.img2Props = { ...this.img2Props };
+    const pixels = document.createElement('canvas');
+    pixels.width = this.canvas.width;
+    pixels.height = this.canvas.height;
+    pixels.getContext('2d').drawImage(this.canvas, 0, 0);
+    this.undoHistory.push({ state, pixels, paperSettings: this.lastPaperSettings });
+    if (this.undoHistory.length > 8) this.undoHistory.shift();
+    document.getElementById('undoPrintBtn').disabled = false;
+  }
+
+  undoPrint() {
+    const previous = this.undoHistory.pop();
+    if (!previous) return;
+    Object.assign(this, previous.state);
+    this.canvas.width = previous.pixels.width;
+    this.canvas.height = previous.pixels.height;
+    this.halftonePattern = this.createHalftonePattern();
+    if (previous.paperSettings) {
+      ['paperSizeSelect', 'paperOrientationSelect', 'paperToneSelect'].forEach((id, index) => {
+        document.getElementById(id).value = previous.paperSettings[index];
+      });
+    }
+    document.getElementById('paperSizeOutput').textContent = `${this.canvas.width} × ${this.canvas.height} px`;
+    [1, 2].forEach(slot => {
+      const img = this[`image${slot}`];
+      const preview = document.getElementById(`preview${slot}`);
+      preview.replaceChildren();
+      preview.dataset.empty = String(!img);
+      if (img) { const thumb = document.createElement('img'); thumb.src = img.src; thumb.alt = `Ink layer ${slot}`; preview.append(thumb); }
+      else preview.textContent = 'Pick an image';
+      document.getElementById(`risoColor${slot}Select`).value = this[`img${slot}Props`].risoColor || '';
+      document.getElementById(`opacity${slot}Slider`).value = this[`opacity${slot}`] * 100;
+      document.getElementById(`opacity${slot}Value`).textContent = `${Math.round(this[`opacity${slot}`] * 100)}%`;
+    });
+    document.getElementById('grainSlider').value = this.grainIntensity * 100;
+    document.getElementById('grainValue').textContent = `${Math.round(this.grainIntensity * 100)}%`;
+    document.getElementById('blendModeSelect').value = this.blendMode;
+    document.getElementById('halftoneToggle').textContent = `Halftone: ${this.halftoneEnabled ? 'ON' : 'OFF'}`;
+    document.getElementById('halftoneToggle').classList.toggle('active', this.halftoneEnabled);
+    document.getElementById('separationModeBtn').textContent = this.separationMode ? 'View Composite' : 'View Separations';
+    this.updateOffsetUI();
+    this.updateColorPalette();
+    this.updateEmptyState();
+    this.render();
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.drawImage(previous.pixels, 0, 0);
+    document.getElementById('undoPrintBtn').disabled = !this.undoHistory.length;
+  }
+
+  printArtwork() {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) { alert('Allow pop-ups to open the print preview.'); return; }
+    const sizes = { a5: 'A5', a4: 'A4', a3: 'A3', letter: 'letter' };
+    const key = document.getElementById('paperSizeSelect').value;
+    const size = sizes[key];
+    const orientation = this.canvas.width > this.canvas.height ? 'landscape' : 'portrait';
+    const doc = printWindow.document;
+    doc.title = 'Riso Print';
+    const style = doc.createElement('style');
+    const pageSize = size ? `${size} ${orientation}` : `${this.canvas.width / 150}in ${this.canvas.height / 150}in`;
+    style.textContent = `@page { size: ${pageSize}; margin: 0; } body { margin: 0; } img { display: block; width: 100%; height: 100vh; object-fit: contain; print-color-adjust: exact; -webkit-print-color-adjust: exact; }`;
+    doc.head.append(style);
+    const img = doc.createElement('img');
+    img.alt = 'Risograph artwork';
+    img.onload = () => { printWindow.focus(); printWindow.print(); };
+    img.src = this.canvas.toDataURL('image/png');
+    doc.body.append(img);
+  }
+
+  updatePaperSize() {
+    // Physical formats use pixel dimensions calculated at 150 pixels per inch.
+    const sizes = { original: [800, 1200], a5: [874, 1240], a4: [1240, 1754], a3: [1754, 2480], letter: [1275, 1650] };
+    const key = document.getElementById('paperSizeSelect').value;
+    const size = sizes[key];
+    if (!size) return;
+    const portrait = document.getElementById('paperOrientationSelect').value === 'portrait';
+    this.canvas.width = portrait ? size[0] : size[1];
+    this.canvas.height = portrait ? size[1] : size[0];
+    this.halftonePattern = this.createHalftonePattern();
+    document.getElementById('paperSizeOutput').textContent = `${this.canvas.width} × ${this.canvas.height} px${key === 'original' ? '' : ' · 150 ppi equivalent'}`;
+    this.render();
+  }
+
+  initInkSwatches() {
+    [1, 2].forEach((slot) => {
+      const select = document.getElementById(`risoColor${slot}Select`);
+      const picker = document.createElement('details');
+      picker.className = 'ink-swatch-picker';
+      const summary = document.createElement('summary');
+      summary.id = `inkPicker${slot}`;
+      summary.setAttribute('aria-label', `Ink color for layer ${slot}`);
+      const selectedSwatch = document.createElement('span');
+      selectedSwatch.className = 'ink-chip';
+      selectedSwatch.setAttribute('aria-hidden', 'true');
+      const selectedName = document.createElement('span');
+      selectedName.className = 'ink-selected-name';
+      summary.append(selectedSwatch, selectedName);
+      picker.appendChild(summary);
+      const list = document.createElement('div');
+      list.className = 'ink-swatch-list';
+      [['', { name: 'Original Color' }], ...Object.entries(RISO_COLORS)].forEach(([key, color]) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.ink = key;
+        button.dataset.slot = slot;
+        button.setAttribute('aria-pressed', 'false');
+        const swatch = document.createElement('span');
+        swatch.className = 'ink-chip';
+        swatch.setAttribute('aria-hidden', 'true');
+        swatch.style.background = key ? `rgb(${color.r}, ${color.g}, ${color.b})` : 'conic-gradient(#ff6e96, #0064af, #ffb900, #ff6e96)';
+        button.append(swatch, document.createTextNode(color.name));
+        button.addEventListener('click', () => {
+          select.value = key;
+          select.dispatchEvent(new Event('change', { bubbles: true }));
+          picker.open = false;
+          summary.focus();
+        });
+        list.appendChild(button);
+      });
+      picker.appendChild(list);
+      select.insertAdjacentElement('afterend', picker);
+      select.hidden = true;
+      picker.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          picker.open = false;
+          summary.focus();
+        }
+      });
+    });
+    this.render();
+  }
+
+  applyStartingLook(look) {
+    const presets = {
+      clean: { grain: 0, halftone: false, x: 0, y: 0 },
+      grainy: { grain: 0.65, halftone: true, x: 0, y: 0 },
+      shifted: { grain: 0.15, halftone: true, x: 30, y: -20 },
+    };
+    const preset = presets[look];
+    if (!preset) return;
+    this.grainIntensity = preset.grain;
+    this.halftoneEnabled = preset.halftone;
+    this.blendMode = 'multiply';
+    this.img1Props.offsetX = this.img1Props.offsetY = 0;
+    this.img2Props.offsetX = preset.x;
+    this.img2Props.offsetY = preset.y;
+    this.updateOffsetUI();
+    document.getElementById('grainSlider').value = Math.round(preset.grain * 100);
+    document.getElementById('grainValue').textContent = `${Math.round(preset.grain * 100)}%`;
+    document.getElementById('blendModeSelect').value = 'multiply';
+    const toggle = document.getElementById('halftoneToggle');
+    toggle.textContent = preset.halftone ? 'Halftone: ON' : 'Halftone: OFF';
+    toggle.classList.toggle('active', preset.halftone);
+    this.render();
   }
 
   loadDefaults() {
@@ -766,13 +984,41 @@ class ColorMixer {
     const btn = document.getElementById("separationModeBtn");
     if (btn) {
       btn.innerHTML = this.separationMode
-        ? '<span class="btn-icon">👁️</span> Combined View'
-        : '<span class="btn-icon">👁️</span> See each layer';
+        ? 'View Composite'
+        : 'View Separations';
     }
     this.render();
   }
 
   render() {
+    this.lastPaperSettings = ['paperSizeSelect', 'paperOrientationSelect', 'paperToneSelect'].map(id => document.getElementById(id).value);
+    [1, 2].forEach((slot) => {
+      const props = slot === 1 ? this.img1Props : this.img2Props;
+      const ink = RISO_COLORS[props.risoColor] || RISO_COLORS.black;
+      const color = `rgb(${ink.r}, ${ink.g}, ${ink.b})`;
+      const select = document.getElementById(`risoColor${slot}Select`);
+      select.style.backgroundColor = props.risoColor ? `rgb(${Math.round(255 * 0.84 + ink.r * 0.16)}, ${Math.round(255 * 0.84 + ink.g * 0.16)}, ${Math.round(255 * 0.84 + ink.b * 0.16)})` : '#fff';
+      select.style.borderColor = props.risoColor ? color : '#e5e5e5';
+      select.style.boxShadow = props.risoColor ? `inset 4px 0 0 ${color}` : 'none';
+      const summary = document.getElementById(`inkPicker${slot}`);
+      if (summary) {
+        const name = props.risoColor ? ink.name : 'Original Color';
+        summary.querySelector('.ink-selected-name').textContent = name;
+        summary.querySelector('.ink-chip').style.background = props.risoColor ? color : 'conic-gradient(#ff6e96, #0064af, #ffb900, #ff6e96)';
+        summary.style.backgroundColor = select.style.backgroundColor;
+        summary.style.borderColor = select.style.borderColor;
+        summary.setAttribute('aria-label', `Ink color for layer ${slot}: ${name}`);
+      }
+      const coverage = (slot === 1 ? this.opacity1 : this.opacity2) * 100;
+      const slider = document.getElementById(`opacity${slot}Slider`);
+      slider.style.background = `linear-gradient(to right, ${color} ${coverage}%, #e5e5e5 ${coverage}%)`;
+      const strip = slider.parentElement.querySelector('.coverage-strip');
+      if (strip) strip.style.background = `linear-gradient(to right, transparent, ${color})`;
+    });
+    document.querySelectorAll('[data-ink]').forEach((button) => {
+      const props = button.dataset.slot === '1' ? this.img1Props : this.img2Props;
+      button.setAttribute('aria-pressed', String((props.risoColor || '') === button.dataset.ink));
+    });
     if (this.separationMode) {
       this.renderSeparated();
     } else {
