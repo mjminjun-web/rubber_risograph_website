@@ -2154,3 +2154,259 @@ input[type="range"]::-moz-range-thumb {
     border-radius: 8px;
   }
 }
+
+/* ============================================
+   WELCOME HIERARCHY AND INFLATING INSTRUCTIONS
+   ============================================ */
+#welcomeModal .welcome-modal {
+  width: calc(100% - 32px);
+  max-width: 960px;
+  margin: 6vh auto;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+#welcomeModal .welcome-content {
+  padding: 64px 40px 40px;
+}
+
+#welcomeModal h2 {
+  font-family: "Arial Rounded MT Bold", "Arial Rounded MT", "Trebuchet MS", sans-serif;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0;
+  color: #171717;
+  text-shadow: 2px 2px 0 #ff6b6b, -1px -1px 0 #4ecdc4;
+  text-wrap: balance;
+  margin: 0 auto 40px;
+  max-width: 720px;
+}
+
+#welcomeModal .welcome-steps {
+  display: grid;
+  grid-template-columns: 1fr 24px 1fr 24px 1fr;
+  gap: 12px;
+  margin: 0 0 36px;
+  align-items: center;
+}
+
+#welcomeModal .welcome-step {
+  min-width: 0;
+  gap: 16px;
+  transform-origin: center;
+  animation: riso-inflate 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: 0.3s;
+}
+
+#welcomeModal .step-num {
+  width: 40px;
+  height: 40px;
+  font: 700 16px/1 sans-serif;
+}
+
+#welcomeModal .welcome-step:nth-child(even) .step-num {
+  width: auto;
+  height: auto;
+  font-size: 24px;
+}
+
+#welcomeModal .step-text {
+  display: block;
+  max-width: 210px;
+  min-height: 66px;
+  font: 800 26px/1.2 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #171717;
+  transform-origin: center;
+}
+
+#welcomeModal .welcome-step:nth-child(even) .step-text { display: none; }
+#welcomeModal .welcome-step:nth-child(2) { animation-delay: 1.35s; }
+#welcomeModal .welcome-step:nth-child(3) { animation-delay: 1.65s; }
+#welcomeModal .welcome-step:nth-child(4) { animation-delay: 2.7s; }
+#welcomeModal .welcome-step:nth-child(5) { animation-delay: 3s; }
+
+#welcomeModal .welcome-sub {
+  max-width: 480px;
+  margin: 0 auto 28px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+#welcomeModal .view-prints-btn {
+  min-height: 52px;
+  padding: 14px 36px;
+  font-size: 18px;
+}
+
+#welcomeModal .welcome-about-link {
+  display: block;
+  width: fit-content;
+  margin: 20px auto 0;
+  font-size: 13px;
+}
+
+@keyframes riso-inflate {
+  0% { transform: scale(0.82, 0.65); opacity: 0; }
+  35% { transform: scale(1.06, 1.12); opacity: 1; }
+  58% { transform: scale(0.98, 0.96); }
+  80%, 100% { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  #welcomeModal .welcome-content { padding: 56px 24px 28px; }
+  #welcomeModal h2 { font-size: 36px; margin-bottom: 28px; }
+  #welcomeModal .welcome-steps { grid-template-columns: 1fr; gap: 20px; }
+  #welcomeModal .welcome-step { flex-direction: row; gap: 16px; text-align: left; }
+  #welcomeModal .welcome-step:nth-child(even) { display: none; }
+  #welcomeModal .step-num { flex: 0 0 40px; }
+  #welcomeModal .step-text { font-size: 22px; min-height: 0; text-align: left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #welcomeModal .welcome-modal,
+  #welcomeModal .welcome-step,
+  #welcomeModal .step-text { animation: none; }
+}
+
+/* Logo lockups and studio header spacing */
+/* Unframed prints retain their original proportions in grid view. */
+#galleryContainer:not(.scroll-view) > img {
+  box-sizing: border-box;
+  width: 100%;
+  height: auto;
+  align-self: start;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transition: transform 0.2s ease;
+}
+@media (hover: hover) {
+  #galleryContainer:not(.scroll-view) > img:hover {
+    transform: translateY(-3px);
+    box-shadow: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #galleryContainer:not(.scroll-view) > img { transition: none; }
+  #galleryContainer:not(.scroll-view) > img:hover { transform: none; }
+}
+.welcome-orbit {
+  position: relative;
+  width: min(100%, 540px);
+  height: 370px;
+  margin: 0 auto 28px;
+  isolation: isolate;
+  overflow: visible;
+}
+.orbit-prints {
+  position: absolute;
+  width: 290px;
+  height: 290px;
+  left: 50%;
+  top: 50%;
+  margin: -145px 0 0 -145px;
+  animation: print-orbit 18s linear infinite;
+}
+.orbit-prints span {
+  position: absolute;
+  width: 76px;
+  height: 94px;
+  margin: -47px 0 0 -38px;
+  animation: print-counter-orbit 18s linear infinite;
+}
+.orbit-prints span:nth-child(1) { left: 50%; top: 10%; }
+.orbit-prints span:nth-child(2) { left: 88%; top: 30%; }
+.orbit-prints span:nth-child(3) { left: 88%; top: 70%; }
+.orbit-prints span:nth-child(4) { left: 50%; top: 90%; }
+.orbit-prints span:nth-child(5) { left: 12%; top: 70%; }
+.orbit-prints span:nth-child(6) { left: 12%; top: 30%; }
+.orbit-prints img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+  box-shadow: 0 3px 8px #0002;
+  border: 3px solid #fff;
+  box-sizing: border-box;
+}
+#welcomeModal .welcome-orbit h2.welcome-logo {
+  position: absolute;
+  width: 170px;
+  max-width: 55%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  z-index: 1;
+}
+#welcomeModal .welcome-content { padding-top: 36px; }
+#welcomeModal .welcome-step:nth-child(1) { animation-delay: 1s; }
+#welcomeModal .welcome-step:nth-child(2) { animation-delay: 2.1s; }
+#welcomeModal .welcome-step:nth-child(3) { animation-delay: 2.4s; }
+#welcomeModal .welcome-step:nth-child(4) { animation-delay: 3.5s; }
+#welcomeModal .welcome-step:nth-child(5) { animation-delay: 3.8s; }
+@keyframes print-orbit {
+  from { transform: rotate(-40deg); }
+  to { transform: rotate(320deg); }
+}
+@keyframes print-counter-orbit {
+  from { transform: rotate(40deg); }
+  to { transform: rotate(-320deg); }
+}
+@media (max-width: 600px) {
+  .welcome-orbit { height: 300px; margin-bottom: 20px; }
+  .orbit-prints { width: 230px; height: 230px; margin: -115px 0 0 -115px; }
+  .orbit-prints span { width: 58px; height: 72px; margin: -36px 0 0 -29px; }
+  #welcomeModal .welcome-orbit h2.welcome-logo { width: 130px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbit-prints,
+  .orbit-prints span,
+  #welcomeModal .welcome-step { animation: none; }
+}
+#welcomeModal h2.welcome-logo {
+  max-width: 360px;
+  margin: 0 auto 28px;
+  line-height: 0;
+  text-shadow: none;
+}
+.welcome-logo img,
+.home-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.hero-title.home-logo {
+  max-width: 600px;
+  margin: 0 auto 8px;
+  line-height: 0;
+}
+#drawModal .modal-header {
+  padding: 16px 24px;
+  gap: 20px;
+  flex-shrink: 0;
+  min-height: 64px;
+  box-sizing: border-box;
+}
+#drawModal .modal-header h2 {
+  font-size: 20px;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+#drawModal .modal-header .close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 36px;
+  height: 36px;
+  line-height: 1;
+}
+@media (max-width: 600px) {
+  #welcomeModal h2.welcome-logo { max-width: 260px; }
+  #drawModal .modal-header { padding: 12px 16px; }
+}
